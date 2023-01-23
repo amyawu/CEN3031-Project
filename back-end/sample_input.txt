@@ -1,6 +1,6 @@
 Relevant:
 
-curl -X POST -H "Content-Type: application/json" -d "{\"name\":\"Noam Cortes\",\"email\":\"manuel.cortes@example.com\"}" http://localhost:8000/users
+curl -X POST -H "Content-Type: application/json" -d "{\"name\":\"Noam Cortes\",\"email\":\"noam.cortes@example.com\"}" http://localhost:8000/users
 
 curl -X PUT -H "Content-Type: application/json" -d "{\"name\":\"Manuel Cortes\",\"email\":\"manuel.cortes@example.com\"}" http://localhost:8000/users/1
 
