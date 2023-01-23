@@ -9,6 +9,7 @@ The goal is to create an application that will allow users to upload an image an
 
 # Members
 Front end: Jose and Amy
+
 Back end: Gavin and Manuel
 
 # Github Repo: amyawu/CEN3031-Project · GitHub
