@@ -2,23 +2,26 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"log"
+	"net/http"
 	"web-service-gin/controllers"
+	"web-service-gin/helper"
+	"web-service-gin/models"
+	"web-service-gin/services"
 )
 
 // User struct
 type User struct {
 	gorm.Model
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	Name   string `json:"name"`
+	Email  string `json:"email"`
+	ImgURL string `json:"imgurl"`
 }
 
-// GET /users endpoint
+// GET handlers
 func getUsers(c *gin.Context) {
 	var users []User
 	if err := db.Find(&users).Error; err != nil {
@@ -26,19 +29,22 @@ func getUsers(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": users})
-}
+} //GET all the users, /users
 
 func getUser(c *gin.Context) {
 	var user User
 	id := c.Param("id")
 	if err := db.First(&user, id).Error; err != nil {
-		c.AbortWithStatus(http.StatusNotFound)
+		//fmt.Println("The user was not found??")
+		//c.AbortWithStatus(http.StatusNotFound)
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "user not found"})
+
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": user})
-}
+} //GET a specific user, /user/:id
 
-// POST /users endpoint
+// POST handlers
 func createUser(c *gin.Context) {
 	var user User
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -50,7 +56,37 @@ func createUser(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": user})
-}
+} //POST (create) a new user on SQLite database, /users
+
+func createUserWithImage(c *gin.Context) {
+	var user User
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error is happening here": err.Error()})
+		return
+	}
+
+	// Get image file from the request
+	image, err := c.FormFile("image")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "image is required"})
+		return
+	}
+
+	// Upload image to Cloudinary
+	imageUrl, err := helper.ImageUploadHelper(image)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Save user data and image URL in the database
+	user.ImgURL = imageUrl
+	if err := db.Create(&user).Error; err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": user})
+} //POST (create) a new user, with a corresponding image in Cloudinary, /users/image
 
 // PUT /users/:id endpoint
 func updateUser(c *gin.Context) {
@@ -69,7 +105,37 @@ func updateUser(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": user})
-}
+} //PUT updated information for a user, /users/:id
+
+func uploadUserImage(c *gin.Context) {
+	var user User
+	id := c.Param("id")
+	if err := db.First(&user, id).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+			"message": "No user was found with  the given ID",
+		})
+		return
+	}
+	//controllers.FileUpload()
+
+	formfile, _, err := c.Request.FormFile("file")
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"message": "No file was received take an L",
+		})
+		return
+	}
+
+	uploadUrl, err := services.NewMediaUpload().FileUpload(models.File{File: formfile})
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	user.ImgURL = uploadUrl
+	db.Save(&user)
+	c.JSON(http.StatusOK, gin.H{"message": "image is uploaded"})
+} //PUT a new image for an existing user, /users/:id/image
 
 // DELETE /users/:id endpoint
 func deleteUser(c *gin.Context) {
@@ -106,8 +172,13 @@ func main() {
 	// Define the routes
 	r.GET("/users", getUsers)
 	r.GET("/users/:id", getUser)
+
 	r.POST("/users", createUser)
+	r.POST("/users/image", createUserWithImage)
+
 	r.PUT("/users/:id", updateUser)
+	r.PUT("/users/:id/image", uploadUserImage)
+
 	r.DELETE("/users/:id", deleteUser)
 
 	//Image upload
