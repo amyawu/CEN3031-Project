@@ -24,11 +24,12 @@ type User struct {
 // GET handlers
 func getUsers(c *gin.Context) {
 	var users []User
+
 	if err := db.Find(&users).Error; err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": users})
+	c.IndentedJSON(http.StatusOK, gin.H{"data": users})
 } //GET all the users, /users
 
 func getUser(c *gin.Context) {
@@ -38,10 +39,9 @@ func getUser(c *gin.Context) {
 		//fmt.Println("The user was not found??")
 		//c.AbortWithStatus(http.StatusNotFound)
 		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "user not found"})
-
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": user})
+	c.IndentedJSON(http.StatusOK, gin.H{"data": user})
 } //GET a specific user, /user/:id
 
 // POST handlers
@@ -174,7 +174,7 @@ func main() {
 	r.GET("/users/:id", getUser)
 
 	r.POST("/users", createUser)
-	r.POST("/users/image", createUserWithImage)
+	r.POST("/users/image", createUserWithImage) //May not be necessary
 
 	r.PUT("/users/:id", updateUser)
 	r.PUT("/users/:id/image", uploadUserImage)
