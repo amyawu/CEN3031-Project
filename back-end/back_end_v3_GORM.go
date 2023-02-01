@@ -16,9 +16,12 @@ import (
 // User struct
 type User struct {
 	gorm.Model
-	Name   string `json:"name"`
-	Email  string `json:"email"`
-	ImgURL string `json:"imgurl"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	ImgURL   string `json:"imgurl"`
+	Gender   string `json:"gender"`
+	Age      int    `json:"age"`
 }
 
 // GET handlers
@@ -174,7 +177,7 @@ func main() {
 	r.GET("/users/:id", getUser)
 
 	r.POST("/users", createUser)
-	r.POST("/users/image", createUserWithImage) //May not be necessary
+	//r.POST("/users/image", createUserWithImage) //May not be necessary
 
 	r.PUT("/users/:id", updateUser)
 	r.PUT("/users/:id/image", uploadUserImage)
