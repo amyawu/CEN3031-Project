@@ -13,3 +13,12 @@ Front end: Jose and Amy
 Back end: Gavin and Manuel
 
 # Github Repo: amyawu/CEN3031-Project · GitHub
+
+# User Stories
+
+As an app user, I would like to be able to create an account on the application such that I am able to have a place to upload images safely.
+
+As an app user, I would like to be able to upload images that may be stored and retrieved later to track health progression.
+
+As a researcher, I would like the user to be able to store relevant information regarding health or demographic data that may be useful for tracking of health status.
+
