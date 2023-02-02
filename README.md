@@ -24,7 +24,7 @@ As an app user, I would like to be able to upload images that may be stored and 
 
 As a researcher, I would like the user to be able to store relevant information regarding health or demographic data that may be useful for tracking of health status.
 
-
+As an app user, I would like to be able to store several images at a time so that I don't waste time uploading them one at a time.
 
 ## Future stories to implement
 
@@ -34,6 +34,8 @@ As an app user, I would like to have the option for the image to be saved and se
 
 As a researcher, I would like for the user to have the option to store the image and allow its usage for further model training.
 
+As an app user, I would like the option to change my password so that I can access my account in the event I forget my log in.
 
+As an app user, I would like the option to sort through my saved images based on the date I uploaded them.
 
-
+As an app user, I would like to be able to delete images that I have stored so that I can get rid past images.
