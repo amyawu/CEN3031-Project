@@ -16,9 +16,24 @@ Back end: Gavin and Manuel
 
 # User Stories
 
+## Currently in development
+
 As an app user, I would like to be able to create an account on the application such that I am able to have a place to upload images safely.
 
 As an app user, I would like to be able to upload images that may be stored and retrieved later to track health progression.
 
 As a researcher, I would like the user to be able to store relevant information regarding health or demographic data that may be useful for tracking of health status.
+
+
+
+## Future stories to implement
+
+As an app user, I would like to be able to select an image to be submitted so that it may be processed through the model.
+
+As an app user, I would like to have the option for the image to be saved and sent for further training of the classification model, so that performance may be improved.
+
+As a researcher, I would like for the user to have the option to store the image and allow its usage for further model training.
+
+
+
 
