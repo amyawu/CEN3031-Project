@@ -20,6 +20,11 @@ Back end: Gavin and Manuel
 
 As an app user, I would like to be able to create an account on the application such that I am able to have a place to upload images safely.
 
+As an app user, I would like to receive useful information based on the specifics provided by my submitted data.
+
+As an app user, I would like to count with an easy to use interface that provides me with all the options I need to undergo the
+process easily.
+
 As an app user, I would like to be able to upload images that may be stored and retrieved later to track health progression.
 
 As a researcher, I would like the user to be able to store relevant information regarding health or demographic data that may be useful for tracking of health status.
