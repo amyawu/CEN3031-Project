@@ -19,7 +19,13 @@ import {MatToolbarModule} from '@angular/material/toolbar';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule, FlexLayoutModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, MatToolbarModule
+    AppRoutingModule, 
+    FlexLayoutModule, 
+    MatFormFieldModule, 
+    MatInputModule, 
+    MatButtonModule, 
+    MatCardModule, 
+    MatToolbarModule
   ],
   //schemas: [ NO_ERRORS_SCHEMA ],
   providers: [],
