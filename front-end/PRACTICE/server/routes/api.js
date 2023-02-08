@@ -46,4 +46,8 @@ router.post('/login', (req, res) => {
 
 })
 
+router.get('/events', (req, res) => {
+
+})
+
 module.exports = router;
