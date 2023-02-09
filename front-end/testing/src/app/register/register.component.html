@@ -5,14 +5,14 @@
             <form fxLayoutAlign="stretch" fxLayout="column" class="login-form">
                 <mat-form-field>
                 <!--<mat-label>What's your username girl</mat-label> --> 
-                    <input matInput placeholder="Username">
+                    <input [(ngModel)]= "registerUserData.email" name = "email" type="text" matInput placeholder="Username">
                 </mat-form-field>
             
                 <mat-form-field>
                     <!--<mat-label>C'mon what's the password</mat-label> --> 
-                    <input matInput type = "password" placeholder="Password">
+                    <input [(ngModel)]= "registerUserData.password" name = "password" matInput type = "password" placeholder="Password">
                 </mat-form-field>
-                    <button mat-raised-button type="Submit you fool">Register</button>
+                    <button (click)="registerUser()" mat-raised-button type="Submit you fool">Register</button>
             </form>
         </mat-card-content>
     </mat-card>

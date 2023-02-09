@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 //import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -12,6 +14,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card'; 
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { RegisterComponent } from './register/register.component'; 
+import { AuthService } from './auth.service';
 
 @NgModule({
   declarations: [
@@ -27,10 +30,12 @@ import { RegisterComponent } from './register/register.component';
     MatInputModule, 
     MatButtonModule, 
     MatCardModule, 
-    MatToolbarModule
+    HttpClientModule,
+    MatToolbarModule,
+    FormsModule
   ],
   //schemas: [ NO_ERRORS_SCHEMA ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
