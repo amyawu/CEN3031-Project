@@ -2,15 +2,16 @@
     margin: auto;
     margin-top: 15%;
 }
-.main-div mat-card {
-    padding: 0px;
-    border: 1px solid;
+.main-div button {
+    background: #6C88C4;
 }
 .login-form {
+    border: 1px solid;
+    background: #FFF;
     padding: 20px;
 }
 
 .mat-toolbar {
-    background: teal;
-    color: #fff
+    border: 1px solid;
+    background: #6C88C4;
  }
