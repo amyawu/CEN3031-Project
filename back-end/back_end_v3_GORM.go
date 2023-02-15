@@ -7,26 +7,16 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"log"
 	"net/http"
+	config "web-service-gin/configs"
 	"web-service-gin/controllers"
 	"web-service-gin/helper"
 	"web-service-gin/models"
 	"web-service-gin/services"
 )
 
-// User struct
-type User struct {
-	gorm.Model
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	ImgURL   string `json:"imgurl"`
-	Gender   string `json:"gender"`
-	Age      int    `json:"age"`
-}
-
 // GET handlers
 func getUsers(c *gin.Context) {
-	var users []User
+	var users []config.User
 
 	if err := db.Find(&users).Error; err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
@@ -36,7 +26,7 @@ func getUsers(c *gin.Context) {
 } //GET all the users, /users
 
 func getUser(c *gin.Context) {
-	var user User
+	var user config.User
 	id := c.Param("id")
 	if err := db.First(&user, id).Error; err != nil {
 		//fmt.Println("The user was not found??")
@@ -49,7 +39,7 @@ func getUser(c *gin.Context) {
 
 // POST handlers
 func createUser(c *gin.Context) {
-	var user User
+	var user config.User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -62,7 +52,7 @@ func createUser(c *gin.Context) {
 } //POST (create) a new user on SQLite database, /users
 
 func createUserWithImage(c *gin.Context) {
-	var user User
+	var user config.User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error is happening here": err.Error()})
 		return
@@ -93,7 +83,7 @@ func createUserWithImage(c *gin.Context) {
 
 // PUT /users/:id endpoint
 func updateUser(c *gin.Context) {
-	var user User
+	var user config.User
 	id := c.Param("id")
 	if err := db.First(&user, id).Error; err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
@@ -111,7 +101,7 @@ func updateUser(c *gin.Context) {
 } //PUT updated information for a user, /users/:id
 
 func uploadUserImage(c *gin.Context) {
-	var user User
+	var user config.User
 	id := c.Param("id")
 	if err := db.First(&user, id).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
@@ -142,7 +132,7 @@ func uploadUserImage(c *gin.Context) {
 
 // DELETE /users/:id endpoint
 func deleteUser(c *gin.Context) {
-	var user User
+	var user config.User
 	id := c.Param("id")
 	if err := db.First(&user, id).Error; err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
@@ -156,6 +146,7 @@ func deleteUser(c *gin.Context) {
 var db *gorm.DB
 
 func main() {
+
 	// Connect to the SQLite database
 	db_temp, err := gorm.Open("sqlite3", "test.db")
 	if err != nil {
@@ -167,10 +158,23 @@ func main() {
 	db = db_temp
 
 	// Automatically create the "users" table based on the User struct
-	db.AutoMigrate(&User{})
-
+	db.AutoMigrate(&config.User{})
 	// Create a new Gin router
 	r := gin.Default()
+
+	//----------------------
+	//// create/configure database instance
+	//db := config.CreateDatabase()
+	//
+	//// configure firebase
+	//firebaseAuth := config.SetupFirebase()
+	//
+	//// set db & firebase auth to gin context with a middleware to all incoming request
+	//r.Use(func(c *gin.Context) {
+	//	c.Set("db", db)
+	//	c.Set("firebaseAuth", firebaseAuth)
+	//})
+	//-------------------------
 
 	// Define the routes
 	r.GET("/users", getUsers)
