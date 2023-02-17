@@ -147,7 +147,7 @@ var db *gorm.DB
 
 func main() {
 
-	// Connect to the SQLite database
+	//Connect to the SQLite database
 	db_temp, err := gorm.Open("sqlite3", "test.db")
 	if err != nil {
 		log.Fatal(err)
@@ -159,11 +159,12 @@ func main() {
 
 	// Automatically create the "users" table based on the User struct
 	db.AutoMigrate(&config.User{})
-	// Create a new Gin router
+
+	// initialize new gin engine (for server)
 	r := gin.Default()
 
-	//----------------------
-	//// create/configure database instance
+	//-------------------------Firebase that I cant figure out-------------------------
+	//// configure database
 	//db := config.CreateDatabase()
 	//
 	//// configure firebase
@@ -174,8 +175,10 @@ func main() {
 	//	c.Set("db", db)
 	//	c.Set("firebaseAuth", firebaseAuth)
 	//})
-	//-------------------------
-
+	//
+	//// using the auth middle ware to validate api requests
+	//r.Use(middleware.AuthMiddleware)
+	//------------------------Firebase that I cant figure out----------------------------
 	// Define the routes
 	r.GET("/users", getUsers)
 	r.GET("/users/:id", getUser)
