@@ -3,12 +3,12 @@ package main
 import (
 	"fmt"
 	"github.com/gin-contrib/cors"
-	//"github.com/gin-contrib/limit"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"log"
 	"net/http"
+	"os/exec"
 	"regexp"
 	config "web-service-gin/configs"
 	"web-service-gin/controllers"
@@ -19,6 +19,11 @@ import (
 // GET handlers
 func getUsers(c *gin.Context) {
 	var users []config.User
+	db, err := openDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
 
 	if err := db.Find(&users).Error; err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
@@ -28,11 +33,10 @@ func getUsers(c *gin.Context) {
 } //GET all the users, /users
 
 func getUser(c *gin.Context) {
-	var user config.User
 	id := c.Param("id")
-	fmt.Println(id)
-	if err := db.First(&user, id).Error; err != nil {
-		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "user not found by id"})
+	user, err := retrieveUser(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "user not found by ID"})
 		return
 	}
 	c.IndentedJSON(http.StatusOK, gin.H{"data": user})
@@ -50,9 +54,33 @@ func getUserByEmail(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": user})
 }
 
+func getClassification(c *gin.Context) {
+
+	id := c.Param("id")
+	user, err := retrieveUser(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "user not found by ID"})
+		return
+	}
+	cmd := exec.Command("conda", "activate", "Tensorflow", "&&", "python", "./python_scripts/sample_network.py", user.ImgURL)
+	out, err := cmd.Output()
+	if err != nil {
+		fmt.Println("Error executing Python script:", err)
+	}
+	fmt.Println(string(out))
+	c.IndentedJSON(http.StatusOK, gin.H{"data": string(out)})
+
+}
+
 // POST handlers
 func createUser(c *gin.Context) {
 	var user config.User
+	db, err := openDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -78,6 +106,12 @@ func createUser(c *gin.Context) {
 } //POST (create) a new user on SQLite database, /users
 
 func verifyUser(c *gin.Context) {
+	db, err := openDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
 	var req struct {
 		Email    string `json:"email" binding:"required"`
 		Password string `json:"password" binding:"required"`
@@ -106,26 +140,14 @@ func verifyUser(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-//func verifyUser(c *gin.Context) {
-//	email := c.Param("email")
-//	password := c.Query("password")
-//
-//	var user config.User
-//	if err := db.Where("email = ?", email).First(&user).Error; err != nil {
-//		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
-//		return
-//	}
-//
-//	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
-//		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid password"})
-//		return
-//	}
-//
-//	c.JSON(http.StatusOK, user)
-//}
-
 // PUT /users/:id endpoint
 func updateUser(c *gin.Context) {
+	db, err := openDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
 	var user config.User
 	id := c.Param("id")
 
@@ -155,6 +177,12 @@ func updateUser(c *gin.Context) {
 } //PUT updated information for a user, /users/:id
 
 func uploadUserImage(c *gin.Context) {
+	db, err := openDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
 	var user config.User
 	id := c.Param("id")
 	if err := db.First(&user, id).Error; err != nil {
@@ -185,6 +213,12 @@ func uploadUserImage(c *gin.Context) {
 
 // DELETE /users/:id endpoint
 func deleteUser(c *gin.Context) {
+	db, err := openDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
 	var user config.User
 	id := c.Param("id")
 	if err := db.First(&user, id).Error; err != nil {
@@ -200,6 +234,12 @@ func deleteUser(c *gin.Context) {
 
 func findUserByEmail(email string) (*config.User, error) {
 	var user config.User
+	db, err := openDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
 	if err := db.Where("email = ?", email).First(&user).Error; err != nil {
 		return nil, err
 	}
@@ -214,28 +254,40 @@ func isValidEmail(email string) bool {
 	return matched
 }
 
-var db *gorm.DB
-
-func main() {
-
+func openDB() (*gorm.DB, error) {
 	//Connect to the SQLite database
-	db_temp, err := gorm.Open("sqlite3", "test.db")
+	db, err := gorm.Open("sqlite3", "test.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Automatically create the "users" table based on the User struct
+	if err := db.AutoMigrate(&config.User{}).Error; err != nil {
+		db.Close()
+		return nil, err
+	}
+
+	return db, nil
+}
+
+func retrieveUser(id string) (config.User, error) {
+	var user config.User
+	db, err := openDB()
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
 
-	//initialize package level db variable
-	db = db_temp
+	if err := db.First(&user, id).Error; err != nil {
+		return config.User{}, err
+	}
+	return user, nil
+}
 
-	// Automatically create the "users" table based on the User struct
-	db.AutoMigrate(&config.User{})
+func main() {
 
 	// Create a new Gin router
 	r := gin.Default()
-
-	// Set a rate limit of 10 requests per second with a burst of 5.
-	//r.Use(limit.NewRateLimiter(10, 5))
 
 	// Enable CORS
 	config := cors.DefaultConfig()
@@ -246,6 +298,7 @@ func main() {
 	r.GET("/users", getUsers)
 	r.GET("/users/:id", getUser)
 	r.GET("/users/email", getUserByEmail)
+	r.GET("/users/:id/classify", getClassification)
 
 	r.POST("/users", createUser)
 	r.POST("/users/login", verifyUser)
