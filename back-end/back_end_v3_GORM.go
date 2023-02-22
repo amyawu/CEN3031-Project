@@ -2,14 +2,16 @@ package main
 
 import (
 	"fmt"
+	"github.com/gin-contrib/cors"
+	//"github.com/gin-contrib/limit"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"log"
 	"net/http"
+	"regexp"
 	config "web-service-gin/configs"
 	"web-service-gin/controllers"
-	"web-service-gin/helper"
 	"web-service-gin/models"
 	"web-service-gin/services"
 )
@@ -28,14 +30,25 @@ func getUsers(c *gin.Context) {
 func getUser(c *gin.Context) {
 	var user config.User
 	id := c.Param("id")
+	fmt.Println(id)
 	if err := db.First(&user, id).Error; err != nil {
-		//fmt.Println("The user was not found??")
-		//c.AbortWithStatus(http.StatusNotFound)
-		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "user not found"})
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "user not found by id"})
 		return
 	}
 	c.IndentedJSON(http.StatusOK, gin.H{"data": user})
 } //GET a specific user, /user/:id
+
+func getUserByEmail(c *gin.Context) {
+	email := c.Query("email")
+	fmt.Println("This is the email: ")
+	fmt.Println(email)
+	user, err := findUserByEmail(email)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "user not found by email"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": user})
+}
 
 // POST handlers
 func createUser(c *gin.Context) {
@@ -44,6 +57,19 @@ func createUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	if matched := isValidEmail(user.Email); !matched {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid email format"})
+		return
+	}
+
+	// Check if the email already exists in the database
+	var existingUser config.User
+	if err := db.Where("email = ?", user.Email).First(&existingUser).Error; err == nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "user with this email already exists"})
+		return
+	}
+
 	if err := db.Create(&user).Error; err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -51,48 +77,76 @@ func createUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": user})
 } //POST (create) a new user on SQLite database, /users
 
-func createUserWithImage(c *gin.Context) {
+func verifyUser(c *gin.Context) {
+	var req struct {
+		Email    string `json:"email" binding:"required"`
+		Password string `json:"password" binding:"required"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	var user config.User
-	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error is happening here": err.Error()})
+	if err := db.Where("email = ?", req.Email).First(&user).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+	fmt.Println(user.Email)
+	fmt.Println(user.Password)
+	fmt.Println(req.Email)
+	fmt.Println(req.Password)
+
+	//err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
+	if err := db.Where("password = ?", req.Password).First(&user).Error; err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid password"})
 		return
 	}
 
-	// Get image file from the request
-	image, err := c.FormFile("image")
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "image is required"})
-		return
-	}
+	c.JSON(http.StatusOK, user)
+}
 
-	// Upload image to Cloudinary
-	imageUrl, err := helper.ImageUploadHelper(image)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	// Save user data and image URL in the database
-	user.ImgURL = imageUrl
-	if err := db.Create(&user).Error; err != nil {
-		c.AbortWithStatus(http.StatusInternalServerError)
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"data": user})
-} //POST (create) a new user, with a corresponding image in Cloudinary, /users/image
+//func verifyUser(c *gin.Context) {
+//	email := c.Param("email")
+//	password := c.Query("password")
+//
+//	var user config.User
+//	if err := db.Where("email = ?", email).First(&user).Error; err != nil {
+//		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+//		return
+//	}
+//
+//	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
+//		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid password"})
+//		return
+//	}
+//
+//	c.JSON(http.StatusOK, user)
+//}
 
 // PUT /users/:id endpoint
 func updateUser(c *gin.Context) {
 	var user config.User
 	id := c.Param("id")
+
 	if err := db.First(&user, id).Error; err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
+
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	// Check if the email already exists in the database
+	var existingUser config.User
+
+	if err := db.Where("email = ? AND id != ?", user.Email, id).First(&existingUser).Error; err == nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "user with this email already exists"})
+		return
+	}
+
 	if err := db.Save(&user).Error; err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -109,7 +163,6 @@ func uploadUserImage(c *gin.Context) {
 		})
 		return
 	}
-	//controllers.FileUpload()
 
 	formfile, _, err := c.Request.FormFile("file")
 	if err != nil {
@@ -143,6 +196,24 @@ func deleteUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": "user deleted"})
 }
 
+//Helper functions
+
+func findUserByEmail(email string) (*config.User, error) {
+	var user config.User
+	if err := db.Where("email = ?", email).First(&user).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+func isValidEmail(email string) bool {
+	matched, err := regexp.MatchString(`^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$`, email)
+	if err != nil {
+		return false
+	}
+	return matched
+}
+
 var db *gorm.DB
 
 func main() {
@@ -160,31 +231,24 @@ func main() {
 	// Automatically create the "users" table based on the User struct
 	db.AutoMigrate(&config.User{})
 
-	// initialize new gin engine (for server)
+	// Create a new Gin router
 	r := gin.Default()
 
-	//-------------------------Firebase that I cant figure out-------------------------
-	//// configure database
-	//db := config.CreateDatabase()
-	//
-	//// configure firebase
-	//firebaseAuth := config.SetupFirebase()
-	//
-	//// set db & firebase auth to gin context with a middleware to all incoming request
-	//r.Use(func(c *gin.Context) {
-	//	c.Set("db", db)
-	//	c.Set("firebaseAuth", firebaseAuth)
-	//})
-	//
-	//// using the auth middle ware to validate api requests
-	//r.Use(middleware.AuthMiddleware)
-	//------------------------Firebase that I cant figure out----------------------------
+	// Set a rate limit of 10 requests per second with a burst of 5.
+	//r.Use(limit.NewRateLimiter(10, 5))
+
+	// Enable CORS
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:4200", "http://localhost:8080", "http://localhost:8081"}
+	r.Use(cors.New(config))
+
 	// Define the routes
 	r.GET("/users", getUsers)
 	r.GET("/users/:id", getUser)
+	r.GET("/users/email", getUserByEmail)
 
 	r.POST("/users", createUser)
-	//r.POST("/users/image", createUserWithImage) //May not be necessary
+	r.POST("/users/login", verifyUser)
 
 	r.PUT("/users/:id", updateUser)
 	r.PUT("/users/:id/image", uploadUserImage)

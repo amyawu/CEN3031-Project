@@ -5,10 +5,13 @@ go 1.19
 require (
 	firebase.google.com/go v3.13.0+incompatible
 	github.com/cloudinary/cloudinary-go v1.7.0
+	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.8.2
 	github.com/go-playground/validator/v10 v10.11.1
 	github.com/jinzhu/gorm v1.9.16
 	github.com/joho/godotenv v1.4.0
+	go.mongodb.org/mongo-driver v1.11.2
+	golang.org/x/crypto v0.5.0
 	google.golang.org/api v0.110.0
 )
 
@@ -42,7 +45,6 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/ugorji/go/codec v1.2.8 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/crypto v0.5.0 // indirect
 	golang.org/x/net v0.6.0 // indirect
 	golang.org/x/oauth2 v0.5.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
