@@ -19,12 +19,6 @@ import (
 // GET handlers
 func getUsers(c *gin.Context) {
 	var users []config.User
-	db, err := openDB()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
-
 	if err := db.Find(&users).Error; err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -75,11 +69,6 @@ func getClassification(c *gin.Context) {
 // POST handlers
 func createUser(c *gin.Context) {
 	var user config.User
-	db, err := openDB()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
 
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -106,11 +95,6 @@ func createUser(c *gin.Context) {
 } //POST (create) a new user on SQLite database, /users
 
 func verifyUser(c *gin.Context) {
-	db, err := openDB()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
 
 	var req struct {
 		Email    string `json:"email" binding:"required"`
@@ -142,11 +126,6 @@ func verifyUser(c *gin.Context) {
 
 // PUT /users/:id endpoint
 func updateUser(c *gin.Context) {
-	db, err := openDB()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
 
 	var user config.User
 	id := c.Param("id")
@@ -177,11 +156,6 @@ func updateUser(c *gin.Context) {
 } //PUT updated information for a user, /users/:id
 
 func uploadUserImage(c *gin.Context) {
-	db, err := openDB()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
 
 	var user config.User
 	id := c.Param("id")
@@ -213,11 +187,6 @@ func uploadUserImage(c *gin.Context) {
 
 // DELETE /users/:id endpoint
 func deleteUser(c *gin.Context) {
-	db, err := openDB()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
 
 	var user config.User
 	id := c.Param("id")
@@ -234,12 +203,6 @@ func deleteUser(c *gin.Context) {
 
 func findUserByEmail(email string) (*config.User, error) {
 	var user config.User
-	db, err := openDB()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
-
 	if err := db.Where("email = ?", email).First(&user).Error; err != nil {
 		return nil, err
 	}
@@ -272,11 +235,6 @@ func openDB() (*gorm.DB, error) {
 
 func retrieveUser(id string) (config.User, error) {
 	var user config.User
-	db, err := openDB()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
 
 	if err := db.First(&user, id).Error; err != nil {
 		return config.User{}, err
@@ -284,7 +242,14 @@ func retrieveUser(id string) (config.User, error) {
 	return user, nil
 }
 
+var db *gorm.DB
+
 func main() {
+	var err error
+	db, err = openDB()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// Create a new Gin router
 	r := gin.Default()
