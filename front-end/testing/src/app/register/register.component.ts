@@ -12,6 +12,9 @@ export class RegisterComponent {
   constructor(private _auth: AuthService) {}
 
   registerUser() {
+    
+    console.log(this.registerUserData)
+
     this._auth.registerUser(this.registerUserData)
     .subscribe(
       (      res: any) => console.log(res),
