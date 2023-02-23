@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	//"gorm.io/gorm"
 	"log"
 	"net/http"
 	"os/exec"
@@ -219,6 +220,7 @@ func isValidEmail(email string) bool {
 
 func openDB() (*gorm.DB, error) {
 	//Connect to the SQLite database
+
 	db, err := gorm.Open("sqlite3", "test.db")
 	if err != nil {
 		log.Fatal(err)
@@ -229,6 +231,15 @@ func openDB() (*gorm.DB, error) {
 		db.Close()
 		return nil, err
 	}
+
+	//-----------------------
+	//dsn := "manuel.cortes:cen3031melanoma@tcp(mysql.cise.ufl.edu:3306)/Users" //?charset=utf8mb4
+	//db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	//if err != nil {
+	//	panic("failed to connect database")
+	//}
+	//db.AutoMigrate(&config.User{})
+	//----------------------
 
 	return db, nil
 }
@@ -245,6 +256,7 @@ func retrieveUser(id string) (config.User, error) {
 var db *gorm.DB
 
 func main() {
+
 	var err error
 	db, err = openDB()
 	if err != nil {
