@@ -282,6 +282,7 @@ func main() {
 
 	r.PUT("/users/:id", updateUser)
 	r.PUT("/users/:id/image", uploadUserImage)
+	// r.PUT("/users/:id/imagev2", uploadUserImage_v2)
 
 	r.DELETE("/users/:id", deleteUser)
 
