@@ -57,6 +57,7 @@ func getClassification(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "user not found by ID"})
 		return
 	}
+	//Requires Conda environment names 'Tensorflow' with Tensorflow v.X.X.X installed
 	cmd := exec.Command("conda", "activate", "Tensorflow", "&&", "python", "./python_scripts/sample_network.py", user.ImgURL)
 	out, err := cmd.Output()
 	if err != nil {
