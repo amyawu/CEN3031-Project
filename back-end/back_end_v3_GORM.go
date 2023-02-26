@@ -187,6 +187,36 @@ func uploadUserImage(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "image is uploaded"})
 } //PUT a new image for an existing user, /users/:id/image
 
+func uploadUserImageV2(c *gin.Context) {
+
+	var user config.User
+	id := c.Param("id")
+	if err := db.First(&user, id).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+			"message": "No user was found with  the given ID",
+		})
+		return
+	}
+
+	formfile, _, err := c.Request.FormFile("file")
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"message": "No file was received take an L",
+		})
+		return
+	}
+
+	uploadUrl, err := services.NewMediaUpload().FileUploadV2(models.File{File: formfile}, user.Email)
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	user.ImgURL = uploadUrl
+	db.Save(&user)
+	c.JSON(http.StatusOK, gin.H{"message": "image is uploaded"})
+} //PUT a new image for an existing user, /users/:id/image
+
 // DELETE /users/:id endpoint
 func deleteUser(c *gin.Context) {
 
@@ -283,7 +313,7 @@ func main() {
 
 	r.PUT("/users/:id", updateUser)
 	r.PUT("/users/:id/image", uploadUserImage)
-	// r.PUT("/users/:id/imagev2", uploadUserImage_v2)
+	r.PUT("/users/:id/imageV2", uploadUserImageV2)
 
 	r.DELETE("/users/:id", deleteUser)
 

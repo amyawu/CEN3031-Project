@@ -12,6 +12,7 @@ var (
 
 type mediaUpload interface {
 	FileUpload(file models.File) (string, error)
+	FileUploadV2(file models.File, email string) (string, error) // V2 of FileUpload for storing emails
 	RemoteUpload(url models.Url) (string, error)
 }
 
@@ -30,6 +31,22 @@ func (*media) FileUpload(file models.File) (string, error) {
 
 	//upload
 	uploadUrl, err := helper.ImageUploadHelper(file.File)
+	if err != nil {
+		return "", err
+	}
+	return uploadUrl, nil
+}
+
+// FileUploadV2 for storing the email of the user for use later on.
+func (*media) FileUploadV2(file models.File, email string) (string, error) {
+	//validate
+	err := validate.Struct(file)
+	if err != nil {
+		return "", err
+	}
+
+	//upload
+	uploadUrl, err := helper.ImageUploadHelperV2(file.File, email) // V2 of the helper function to pass the email on
 	if err != nil {
 		return "", err
 	}
