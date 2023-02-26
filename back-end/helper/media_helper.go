@@ -37,7 +37,7 @@ func ImageUploadHelperV2(input interface{}, email string) (string, error) {
 	}
 
 	//upload file, V2 has appendage of the users email
-	uploadParam, err := cld.Upload.Upload(ctx, input, uploader.UploadParams{Folder: config.EnvCloudUploadFolder() + "\\" + email})
+	uploadParam, err := cld.Upload.Upload(ctx, input, uploader.UploadParams{Folder: config.EnvCloudUploadFolder() + "/" + email})
 	if err != nil {
 		return "", err
 	}

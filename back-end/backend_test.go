@@ -44,7 +44,7 @@ func TestCreateUser(t *testing.T) {
 	}
 
 	// Create a new HTTP request
-	req, err := http.NewRequest("POST", "/users", bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", "localhost:8080/users", bytes.NewBuffer(jsonData))
 	if err != nil {
 		t.Errorf("error creating HTTP request: %v", err)
 	}
