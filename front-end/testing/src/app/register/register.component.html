@@ -16,5 +16,8 @@
             </form>
         </mat-card-content>
     </mat-card>
-    <button mat-raised-button [routerLink]="['/login']">Have an account? Go to login page</button>
+    <div class = "button-row">
+        <button mat-raised-button style="background-color: #6C88C4;" [routerLink]="['/login']">Login</button>
+        <button mat-raised-button style="background-color: #FC6238;" [routerLink]="['/upload']">Upload an Image</button>
+    </div>
 </div>  

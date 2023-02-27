@@ -5,6 +5,11 @@
 .main-div button {
     background: #6C88C4;
 }
+
+.button-row {
+    display: table-cell;
+ }
+
 .login-form {
     border: 1px solid;
     background: #FFF;

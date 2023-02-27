@@ -6,11 +6,16 @@
 .main-div button {
     background: #E77577;
 }
+
 .login-form {
     border: 1px solid;
     background: #FFF;
     padding: 20px;
 }
+
+.button-row {
+    display: table-cell;
+ }
 
 .mat-toolbar {
     border: 1px solid;

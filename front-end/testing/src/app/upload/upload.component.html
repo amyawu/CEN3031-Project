@@ -1,1 +1,15 @@
-<p>upload works!</p>
+                <div fxLayout="column" fxLayoutAlign="center center" fxFlexFill class="main-div" fxFlexAlign = "stretch">
+                    <mat-card fxFlex="">
+                        <mat-card-content>
+                            <mat-toolbar>Melagoomba Image Upload Page</mat-toolbar>
+                            <form fxLayoutAlign="stretch" fxLayout="column" class="upload-form">
+                                <input type ="file" (change) = "onFileSelected($event)">
+                                <button (click) = "onUpload()" mat-raised-button>Upload</button>  
+                            </form>
+                        </mat-card-content>
+                    </mat-card>
+                    <div class = "button-row">
+                        <button mat-raised-button style="background-color: #6C88C4;" [routerLink]="['/login']">Login</button>
+                        <button mat-raised-button style="background-color: #E77577;" [routerLink]="['/register']">Register</button>
+                    </div>
+                </div>  
