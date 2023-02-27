@@ -29,6 +29,7 @@ func getUsers(c *gin.Context) {
 
 func getUser(c *gin.Context) {
 	id := c.Param("id")
+
 	user, err := retrieveUser(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "user not found by ID"})
@@ -235,7 +236,7 @@ func deleteUser(c *gin.Context) {
 
 func findUserByEmail(email string) (*config.User, error) {
 	var user config.User
-	db, _ = openDB()
+	//db, _ = openDB()
 
 	if err := db.Where("email = ?", email).First(&user).Error; err != nil {
 		return nil, err
@@ -251,7 +252,16 @@ func isValidEmail(email string) bool {
 	return matched
 }
 
-func openDB() (*gorm.DB, error) {
+func retrieveUser(id string) (config.User, error) {
+	var user config.User
+
+	if err := db.First(&user, id).Error; err != nil {
+		return config.User{}, err
+	}
+	return user, nil
+}
+
+func openDB() *gorm.DB {
 	//Connect to the SQLite database
 
 	db, err := gorm.Open("sqlite3", "test.db")
@@ -262,7 +272,7 @@ func openDB() (*gorm.DB, error) {
 	// Automatically create the "users" table based on the User struct
 	if err := db.AutoMigrate(&config.User{}).Error; err != nil {
 		db.Close()
-		return nil, err
+		return nil
 	}
 
 	//-----------------------
@@ -274,26 +284,16 @@ func openDB() (*gorm.DB, error) {
 	//db.AutoMigrate(&config.User{})
 	//----------------------
 
-	return db, nil
+	return db
 }
 
-func retrieveUser(id string) (config.User, error) {
-	var user config.User
-	db, _ = openDB()
-
-	if err := db.First(&user, id).Error; err != nil {
-		return config.User{}, err
-	}
-	return user, nil
-}
-
-var db *gorm.DB
+var db *gorm.DB = openDB()
 
 func main() {
 
+	//Database is being initialized globally
 	var err error
-	db, err = openDB()
-	if err != nil {
+	if db == nil {
 		log.Fatal(err)
 	}
 
