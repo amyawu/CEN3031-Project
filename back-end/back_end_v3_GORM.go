@@ -235,6 +235,8 @@ func deleteUser(c *gin.Context) {
 
 func findUserByEmail(email string) (*config.User, error) {
 	var user config.User
+	db, _ = openDB()
+
 	if err := db.Where("email = ?", email).First(&user).Error; err != nil {
 		return nil, err
 	}
@@ -277,6 +279,7 @@ func openDB() (*gorm.DB, error) {
 
 func retrieveUser(id string) (config.User, error) {
 	var user config.User
+	db, _ = openDB()
 
 	if err := db.First(&user, id).Error; err != nil {
 		return config.User{}, err
