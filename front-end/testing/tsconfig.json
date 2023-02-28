@@ -2,6 +2,9 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": "../node_modules",
+    "types": ["cypress"],
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
@@ -24,6 +27,7 @@
       "dom"
     ]
   },
+  "include": ["**/*.*"],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

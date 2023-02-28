@@ -16,13 +16,15 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { RegisterComponent } from './register/register.component'; 
 import { AuthService } from './auth.service';
 import { UploadComponent } from './upload/upload.component';
+import { StepperComponent } from './stepper/stepper.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    UploadComponent
+    UploadComponent,
+    StepperComponent
   ],
   imports: [
     BrowserModule,
