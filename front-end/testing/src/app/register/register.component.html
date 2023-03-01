@@ -2,7 +2,7 @@
     <mat-card fxFlex="">
         <mat-card-content>
             <mat-toolbar>Melagoomba Register Page</mat-toolbar>
-            <form fxLayoutAlign="stretch" fxLayout="column" class="login-form">
+            <form data-cy="register_form" fxLayoutAlign="stretch" fxLayout="column" class="login-form">
                 <mat-form-field>
                 <!--<mat-label>What's your username girl</mat-label> --> 
                     <input [(ngModel)]= "registerUserData.email" name = "email" type="text" matInput placeholder="Username">

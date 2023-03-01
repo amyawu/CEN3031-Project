@@ -4,7 +4,7 @@
                             <mat-toolbar>Melagoomba Image Upload Page</mat-toolbar>
                             <form fxLayoutAlign="stretch" fxLayout="column" class="upload-form">
                                 <input type ="file" (change) = "onFileSelected($event)">
-                                <button (click) = "onUpload()" mat-raised-button>Upload</button>  
+                                <button data-cy="upload_button" (click) = "onUpload()" mat-raised-button>Upload</button>  
                             </form>
                         </mat-card-content>
                     </mat-card>

@@ -15,7 +15,6 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { RegisterComponent } from './register/register.component'; 
 import { AuthService } from './auth.service';
 import { UploadComponent } from './upload/upload.component';
-import { StepperComponent } from './stepper/stepper.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +22,6 @@ import { StepperComponent } from './stepper/stepper.component';
     LoginComponent,
     RegisterComponent,
     UploadComponent,
-    StepperComponent
   ],
   imports: [
     BrowserModule,

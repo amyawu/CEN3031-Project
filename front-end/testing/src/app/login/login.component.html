@@ -2,17 +2,17 @@
     <mat-card fxFlex="">
         <mat-card-content>
             <mat-toolbar>Melagoomba Login Page</mat-toolbar>
-            <form fxLayoutAlign="stretch" fxLayout="column" class="login-form">
+            <form data-cy="login_form" fxLayoutAlign="stretch" fxLayout="column" class="login-form">
                 <mat-form-field>
                 <!--<mat-label>What's your username girl</mat-label> --> 
-                    <input [(ngModel)]= "loginUserData.email" name = "email" type="text" matInput placeholder="Username">
+                    <input data-cy="login_email_data" [(ngModel)]= "loginUserData.email" name = "email" type="text" matInput placeholder="Username">
                 </mat-form-field>
             
                 <mat-form-field>
                     <!--<mat-label>C'mon what's the password</mat-label> --> 
-                    <input [(ngModel)]= "loginUserData.password" name = "password" matInput type = "password" placeholder="Password">
+                    <input data-cy="login_password_data" [(ngModel)]= "loginUserData.password" name = "password" matInput type = "password" placeholder="Password">
                 </mat-form-field>
-                    <button (click)="loginUser()" mat-raised-button type="Submit you fool">Login</button>
+                    <button data-cy="login_button" (click)="loginUser()" mat-raised-button type="Submit you fool">Login</button>
             </form>
         </mat-card-content>
     </mat-card>

@@ -4,6 +4,6 @@ export default {
       framework: "angular",
       bundler: "webpack",
     },
-    specPattern: "**/*.cy.ts",
+    specPattern: "**/*.ts",
   },
 };
