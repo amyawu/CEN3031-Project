@@ -19,6 +19,7 @@ E2E Testing via './cypress/e2e/spec.cy.ts' and connected to backend via Go
 - switch to login page from register page
 - switch to register page from login page
 - visit upload page
+
 Unit Tests
 Component testing via './login/login.component.cy.ts'
 - submit an empty form for login page just to see if the page is responsive (won't send the data out to backend since it's empty)
