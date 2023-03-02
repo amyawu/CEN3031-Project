@@ -31,20 +31,21 @@ func TestGetUser(t *testing.T) {
 	// Create a new test router
 	r := gin.New()
 	//Test User to grab
-	user := config.User{Name: "Emily Bronte", Email: "ebronte@gmail.com", Password: "password"}
-	//db.Create(&user)
+	//expectedUser, _ := retrieveUser("1")
 
 	// Define the route and handler function
 	r.GET("/users/:id", getUser)
-	fmt.Println(user.ID)
 	// Create a new HTTP request to the test router with the user's ID
 	req, _ := http.NewRequest("GET", "/users/"+fmt.Sprint(1), nil)
-
 	// Create a new HTTP recorder to capture the response
 	w := httptest.NewRecorder()
-
 	// Serve the HTTP request to the test router
 	r.ServeHTTP(w, req)
+
+	// Check if the response code is 200 OK
+	if w.Code != http.StatusOK {
+		t.Errorf("Expected status code %d but got %d", http.StatusOK, w.Code)
+	}
 
 }
 
@@ -52,12 +53,10 @@ func TestVerifyUser(t *testing.T) {
 	// Create a new test router
 	r := gin.New()
 	//Test User to grab
-	user := config.User{Name: "Emily Bronte", Email: "ebronte@gmail.com", Password: "password"}
-	//db.Create(&user)
+	//user := config.User{Name: "Emily Bronte", Email: "ebronte@gmail.com", Password: "password"}
 
 	// Define the route and handler function
 	r.POST("/users/login", verifyUser)
-	fmt.Println(user.ID)
 	// Create a new HTTP request to the test router with the user's ID
 	req, _ := http.NewRequest("GET", "/users/"+fmt.Sprint(1), nil)
 
@@ -66,6 +65,11 @@ func TestVerifyUser(t *testing.T) {
 
 	// Serve the HTTP request to the test router
 	r.ServeHTTP(w, req)
+
+	// Check if the response code is 200 OK
+	//if w.Code != http.StatusOK {
+	//	t.Errorf("Expected status code %d but got %d", http.StatusOK, w.Code)
+	//}
 
 }
 
@@ -87,6 +91,11 @@ func TestGetUserByEmail(t *testing.T) {
 
 	// Serve the HTTP request to the test router
 	r.ServeHTTP(w, req)
+
+	// Check if the response code is 200 OK
+	if w.Code != http.StatusOK {
+		t.Errorf("Expected status code %d but got %d", http.StatusOK, w.Code)
+	}
 
 }
 
@@ -117,27 +126,4 @@ func TestCreateUser(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 
-	//// Create a new HTTP response recorder
-	//w := httptest.NewRecorder()
-	//
-	//// Perform the request
-	//r.ServeHTTP(w, req)
-	//
-	//// Check the response status code
-	//if w.Code != http.StatusCreated {
-	//	t.Errorf("expected status code %d but got %d", http.StatusCreated, w.Code)
-	//}
-
-	//// Check that the response body contains the created user
-	//var createdUser config.User
-	//err = json.Unmarshal(w.Body.Bytes(), &createdUser)
-	//if err != nil {
-	//	t.Errorf("error unmarshaling JSON: %v", err)
-	//}
-	//if createdUser.Name != newUser.Name {
-	//	t.Errorf("expected user name %s but got %s", newUser.Name, createdUser.Name)
-	//}
-	//if createdUser.Email != newUser.Email {
-	//	t.Errorf("expected user email %s but got %s", newUser.Email, createdUser.Email)
-	//}
 }
