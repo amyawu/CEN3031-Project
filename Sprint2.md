@@ -1,6 +1,6 @@
 # Sprint 2 - Group 38
 # Github Link to Repository: https://github.com/amyawu/CEN3031-Project.git
-
+# YOUTUBE LINK: https://youtu.be/p1Q5EuL-jcI
 # Work completed in Sprint 2 
 During the duration of Sprint 2, we have connected the frontend and the backend as well as made progress on both ends. Integration currently works for login and register page, and we are working on integrating the image uplaod functionality.
 
