@@ -1,12 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"github.com/cloudinary/cloudinary-go/v2"
+	"github.com/cloudinary/cloudinary-go/v2/api/admin"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	//"gorm.io/gorm"
 	"log"
 	"net/http"
 	"os/exec"
@@ -261,6 +263,54 @@ func retrieveUser(id string) (config.User, error) {
 	return user, nil
 }
 
+func listImagesInDirectory(dirName string) ([]string, error) {
+
+	cld, _ := cloudinary.NewFromParams(config.EnvCloudName(), config.EnvCloudAPIKey(), config.EnvCloudAPISecret())
+
+	// Set context
+	ctx := context.Background()
+
+	// Set folder path
+	//folderPath := "go-cloudinary"
+
+	resp, err := cld.Admin.RootFolders(ctx, admin.RootFoldersParams{})
+	for _, resource := range resp.Folders {
+		fmt.Println(resource.Name)
+		fmt.Println(resource.Path)
+
+	}
+
+	// List resources in folder
+	resources, err := cld.Admin.Assets(ctx, admin.AssetsParams{Prefix: "home"})
+	if err != nil {
+		// Handle error
+	}
+
+	// List resources in folder
+	//resources, err := cld.Admin.ResourcesByContext(ctx, admin.ResourcesByContextParams{Prefix: folderPath})
+
+	// Print URLs of all images within a certain directory
+	for _, resource := range resources.Assets {
+		fmt.Println(resource.SecureURL)
+	}
+
+	// List resources in folder
+	resources, err = cld.Admin.AssetsByAssetFolder(ctx, admin.AssetsByAssetFolderParams{AssetFolder: "go-cloudinary"})
+	if err != nil {
+		// Handle error
+	}
+
+	// List resources in folder
+	//resources, err := cld.Admin.ResourcesByContext(ctx, admin.ResourcesByContextParams{Prefix: folderPath})
+
+	// Print URLs of all images within a certain directory
+	for _, resource := range resources.Assets {
+		fmt.Println(resource.SecureURL)
+	}
+
+	return nil, nil
+}
+
 func openDB() *gorm.DB {
 	//Connect to the SQLite database
 
@@ -304,6 +354,8 @@ func main() {
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"http://localhost:4200", "http://localhost:8080", "http://localhost:8081"}
 	r.Use(cors.New(config))
+
+	listImagesInDirectory("lol")
 
 	// Define the routes
 	r.GET("/users", getUsers)
