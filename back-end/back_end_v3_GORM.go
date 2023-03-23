@@ -281,23 +281,9 @@ func listImagesInDirectory(dirName string) ([]string, error) {
 	}
 
 	// List resources in folder
-	resources, err := cld.Admin.Assets(ctx, admin.AssetsParams{Prefix: "home"})
+	resources, err := cld.Admin.Assets(ctx, admin.AssetsParams{Prefix: "go-cloudinary/anne", DeliveryType: "upload"})
 	if err != nil {
-		// Handle error
-	}
-
-	// List resources in folder
-	//resources, err := cld.Admin.ResourcesByContext(ctx, admin.ResourcesByContextParams{Prefix: folderPath})
-
-	// Print URLs of all images within a certain directory
-	for _, resource := range resources.Assets {
-		fmt.Println(resource.SecureURL)
-	}
-
-	// List resources in folder
-	resources, err = cld.Admin.AssetsByAssetFolder(ctx, admin.AssetsByAssetFolderParams{AssetFolder: "go-cloudinary"})
-	if err != nil {
-		// Handle error
+		return nil, err
 	}
 
 	// List resources in folder
