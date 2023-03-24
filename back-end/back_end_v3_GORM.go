@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"os/exec"
 	"regexp"
+	"strings"
 	config "web-service-gin/configs"
 	"web-service-gin/controllers"
 	"web-service-gin/models"
@@ -68,6 +69,30 @@ func getClassification(c *gin.Context) {
 	}
 	fmt.Println(string(out))
 	c.IndentedJSON(http.StatusOK, gin.H{"data": string(out)})
+
+}
+
+func getUserImages(c *gin.Context) {
+	var req struct {
+		Email    string `json:"email" binding:"required"`
+		Password string `json:"password" binding:"required"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var user config.User
+	if err := db.Where("email = ?", req.Email).First(&user).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	directory_substr := "go-cloudinary/"
+
+	i := strings.Index(user.ImgURL, directory_substr)
+	fmt.Println(user.ImgURL[i+len(directory_substr):])
+	listImagesInDirectory(user.ImgURL[i+len(directory_substr):])
 
 }
 
