@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -126,4 +127,28 @@ func TestCreateUser(t *testing.T) {
 	}
 	req.Header.Set("Content-Type", "application/json")
 
+}
+
+// Test to make sure it hashes correct, passes if there's no errors and a hash exists
+func TestHashPassword(t *testing.T) {
+	password := "password123"
+	hash, err := HashPassword(password)
+	if err != nil {
+		t.Errorf("Error hashing password: %v", err)
+	}
+	if len(hash) == 0 {
+		t.Errorf("Hashed password is empty.")
+	}
+}
+
+// Test to see if log in is possible, will pass if the two passwords match
+func TestUserLogin(t *testing.T) {
+	password := "password123"
+	hash, err := HashPassword(password)
+	if err != nil {
+		t.Errorf("Error hashing password: %v", err)
+	}
+	if err := bcrypt.CompareHashAndPassword(hash, []byte(password)); err != nil {
+		t.Errorf("Passwwords do not match: %v", err)
+	}
 }
