@@ -118,6 +118,14 @@ func createUser(c *gin.Context) {
 		return
 	}
 
+	byteArray, err := HashPassword(user.Password)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "password failed to hash"})
+	}
+
+	// Saved the hashed byte array password as a string, may change later.
+	user.Password = string(byteArray)
+
 	if err := db.Create(&user).Error; err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
