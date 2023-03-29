@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
 	"os/exec"
@@ -110,6 +111,14 @@ func createUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "user with this email already exists"})
 		return
 	}
+
+	byteArray, err := HashPassword(user.Password)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "password failed to hash"})
+	}
+
+	// Saved the hashed byte array password as a string, may change later.
+	user.Password = string(byteArray)
 
 	if err := db.Create(&user).Error; err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
@@ -271,6 +280,16 @@ func isValidEmail(email string) bool {
 		return false
 	}
 	return matched
+}
+
+// HashPassword returns a byte slice containing the bcrypt hash of the password at the given cost.
+func HashPassword(password string) ([]byte, error) {
+	return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+}
+
+// CheckPasswordHash compares a bcrypt hashed password with the inputted password. Returns nil on success, or an error on failure.
+func CheckPasswordHash(password, hash []byte) error {
+	return bcrypt.CompareHashAndPassword(hash, password)
 }
 
 func retrieveUser(id string) (config.User, error) {
