@@ -11,7 +11,7 @@ export class UploadComponent {
 
   constructor(private http: HttpClient) {}
 
-  onFileSelected(event: any) {
+  onFileSelected(event) {
     console.log(event)
     this.selectedFile = <File>event.target.files[0]
   }
