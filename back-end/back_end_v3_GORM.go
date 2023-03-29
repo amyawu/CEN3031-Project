@@ -144,9 +144,9 @@ func verifyUser(c *gin.Context) {
 		return
 	}
 	fmt.Println(user.Email)
-	fmt.Println(user.Password)
+	fmt.Println(user.Password) //OG
 	fmt.Println(req.Email)
-	fmt.Println(req.Password)
+	fmt.Println(req.Password) //hashed
 
 	//err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
 	if err := db.Where("password = ?", req.Password).First(&user).Error; err != nil {
