@@ -152,19 +152,18 @@ func verifyUser(c *gin.Context) {
 	fmt.Println(req.Email)
 	fmt.Println(req.Password) //hashed
 
-	//byteArray, err := HashPassword(user.Password)
-	//if err != nil {
-	//	c.JSON(http.StatusBadRequest, gin.H{"error": "password failed to hash"})
-	//}
-	//
-	//// Saved the hashed byte array password as a string, may change later.
-	//user.Password = string(byteArray)
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
 
-	//err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
-	if err := db.Where("password = ?", req.Password).First(&user).Error; err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid password"})
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid credentials"})
 		return
 	}
+
+	////ORIGINAL PASSWORD COMPARSION
+	//if err := db.Where("password = ?", req.Password).First(&user).Error; err != nil {
+	//	c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid password"})
+	//	return
+	//}
 
 	// create a new JWT token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
@@ -173,15 +172,14 @@ func verifyUser(c *gin.Context) {
 	})
 
 	// sign the token with a secret key
-	tokenString, err := token.SignedString([]byte(key))
+	tokenString, err := token.SignedString([]byte(jwtKey))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to generate token"})
 		return
 	}
 
 	// Send the token to the front-end
-	c.JSON(http.StatusOK, gin.H{"token": tokenString})
-	c.JSON(http.StatusOK, user)
+	c.JSON(http.StatusOK, gin.H{"token": tokenString, "user": user})
 }
 
 // PUT /users/:id endpoint
