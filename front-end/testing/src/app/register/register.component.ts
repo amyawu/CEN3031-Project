@@ -22,7 +22,7 @@ export class RegisterComponent {
     res => {
       console.log(res)
       localStorage.setItem('token', res.token)
-      this._router.navigate(['/register'])
+      this._router.navigate(['/profile'])
     },
     (      err: any) => console.log(err)
   )
