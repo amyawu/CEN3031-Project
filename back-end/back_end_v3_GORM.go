@@ -116,13 +116,13 @@ func createUser(c *gin.Context) {
 		return
 	}
 
-	//byteArray, err := HashPassword(user.Password)
-	//if err != nil {
-	//	c.JSON(http.StatusBadRequest, gin.H{"error": "password failed to hash"})
-	//}
-	//
-	//// Saved the hashed byte array password as a string, may change later.
-	//user.Password = string(byteArray)
+	byteArray, err := HashPassword(user.Password)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "password failed to hash"})
+	}
+
+	// Saved the hashed byte array password as a string, may change later.
+	user.Password = string(byteArray)
 
 	if err := db.Create(&user).Error; err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
@@ -188,11 +188,13 @@ func updateUser(c *gin.Context) {
 	var user config.User
 	id := c.Param("id")
 
+	//Tries to find user given an ID
 	if err := db.First(&user, id).Error; err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
+	//Checks that request body has valid user information
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
