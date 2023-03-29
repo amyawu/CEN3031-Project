@@ -16,6 +16,7 @@ import { RegisterComponent } from './register/register.component';
 import { AuthService } from './auth.service';
 import { UploadComponent } from './upload/upload.component';
 import { ProfileComponent } from './profile/profile.component';
+import {MatSelectModule} from '@angular/material/select'; 
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ProfileComponent } from './profile/profile.component';
     FlexLayoutModule, 
     MatFormFieldModule, 
     MatInputModule, 
+    MatSelectModule,
     MatButtonModule, 
     MatCardModule, 
     HttpClientModule,

@@ -17,7 +17,10 @@ export class RegisterComponent {
 
     this._auth.registerUser(this.registerUserData)
     .subscribe(
-      (      res: any) => console.log(res),
+      (      res: any) => {
+        console.log(res)
+        localStorage.setItem('token', res.token)
+      },
       (      err: any) => console.log(err)
     )
   }
