@@ -2,11 +2,14 @@ package main
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/base64"
 	"fmt"
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/admin"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"golang.org/x/crypto/bcrypt"
@@ -14,6 +17,7 @@ import (
 	"net/http"
 	"os/exec"
 	"regexp"
+	"time"
 	config "web-service-gin/configs"
 	"web-service-gin/controllers"
 	"web-service-gin/models"
@@ -112,13 +116,13 @@ func createUser(c *gin.Context) {
 		return
 	}
 
-	byteArray, err := HashPassword(user.Password)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "password failed to hash"})
-	}
-
-	// Saved the hashed byte array password as a string, may change later.
-	user.Password = string(byteArray)
+	//byteArray, err := HashPassword(user.Password)
+	//if err != nil {
+	//	c.JSON(http.StatusBadRequest, gin.H{"error": "password failed to hash"})
+	//}
+	//
+	//// Saved the hashed byte array password as a string, may change later.
+	//user.Password = string(byteArray)
 
 	if err := db.Create(&user).Error; err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
@@ -148,13 +152,13 @@ func verifyUser(c *gin.Context) {
 	fmt.Println(req.Email)
 	fmt.Println(req.Password) //hashed
 
-	byteArray, err := HashPassword(user.Password)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "password failed to hash"})
-	}
-
-	// Saved the hashed byte array password as a string, may change later.
-	user.Password = string(byteArray)
+	//byteArray, err := HashPassword(user.Password)
+	//if err != nil {
+	//	c.JSON(http.StatusBadRequest, gin.H{"error": "password failed to hash"})
+	//}
+	//
+	//// Saved the hashed byte array password as a string, may change later.
+	//user.Password = string(byteArray)
 
 	//err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
 	if err := db.Where("password = ?", req.Password).First(&user).Error; err != nil {
@@ -162,6 +166,21 @@ func verifyUser(c *gin.Context) {
 		return
 	}
 
+	// create a new JWT token
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"sub": user.ID,                               // subject of the token is the user's ID
+		"exp": time.Now().Add(time.Hour * 24).Unix(), // expiration time is 24 hours from now
+	})
+
+	// sign the token with a secret key
+	tokenString, err := token.SignedString([]byte(key))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to generate token"})
+		return
+	}
+
+	// Send the token to the front-end
+	c.JSON(http.StatusOK, gin.H{"token": tokenString})
 	c.JSON(http.StatusOK, user)
 }
 
@@ -403,7 +422,41 @@ func openDB() *gorm.DB {
 	return db
 }
 
+func genKey() {
+	key := make([]byte, 32)
+	if _, err := rand.Read(key); err != nil {
+		panic(err)
+	}
+	fmt.Println(base64.StdEncoding.EncodeToString(key))
+}
+
+func verifyToken(tokenString string) (*jwt.Token, error) {
+	// Parse the token
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		// Validate the algorithm
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+
+		// Return the secret key
+		return jwtKey, nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	// Check if the token is valid
+	if _, ok := token.Claims.(jwt.Claims); !ok && !token.Valid {
+		return nil, fmt.Errorf("invalid token")
+	}
+
+	return token, nil
+}
+
 var db *gorm.DB = openDB()
+
+var jwtKey = []byte("ZkYcqWwhjK/TSFMY2eL21mZADY9x0w+UAqF4UwIRaAY=")
 
 func main() {
 
