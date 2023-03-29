@@ -190,6 +190,41 @@ func updateUser(c *gin.Context) {
 
 func uploadUserImage(c *gin.Context) {
 
+	var req struct {
+		Email string `json:"email" binding:"required"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var user config.User
+	if err := db.Where("email = ?", req.Email).First(&user).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	formfile, _, err := c.Request.FormFile("file")
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"message": "No file was received take an L",
+		})
+		return
+	}
+
+	uploadUrl, err := services.NewMediaUpload().FileUpload(models.File{File: formfile})
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	user.ImgURL = uploadUrl
+	db.Save(&user)
+	c.JSON(http.StatusOK, gin.H{"message": "image is uploaded"})
+} //PUT a new image for an existing user, /users/:id/image
+
+func uploadUserImageByID(c *gin.Context) {
+
 	var user config.User
 	id := c.Param("id")
 	if err := db.First(&user, id).Error; err != nil {
@@ -382,13 +417,14 @@ func main() {
 	r.GET("/users/:id", getUser)
 	r.GET("/users/email", getUserByEmail)
 	r.GET("/users/:id/classify", getClassification)
-	r.GET("/users/images", getUserImages)
+	r.GET("/users/all_images", getUserImages)
 
 	r.POST("/users", createUser)
 	r.POST("/users/login", verifyUser)
 
 	r.PUT("/users/:id", updateUser)
-	r.PUT("/users/:id/image", uploadUserImage)
+	r.PUT("/users/:id/image", uploadUserImageByID)
+	r.PUT("/users/image", uploadUserImage)
 	r.PUT("/users/:id/imageV2", uploadUserImageV2)
 
 	r.DELETE("/users/:id", deleteUser)
