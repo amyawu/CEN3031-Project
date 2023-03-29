@@ -10,7 +10,15 @@
                 <mat-form-field>
                     <input class="profile_gender" data-cy="profile_gender" [(ngModel)]= "profileUserData.gender" name = "gender" matInput type = "text" placeholder="Gender">
                 </mat-form-field>
-     <button mat-raised-button type="Submit you fool">Submit</button>
+
+                <mat-form-field>
+                    <input class="profile_age" data-cy="profile_age" [(ngModel)]= "profileUserData.age" name = "age" matInput type = "text" placeholder="Age">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input class="profile_ethnicity" data-cy="profile_ethnicity" [(ngModel)]= "profileUserData.ethnicity" name = "ethnicity" matInput type = "text" placeholder="Ethnicity">
+                </mat-form-field>
+     <button mat-raised-button type="Submit you fool">Submit</button> 
             </form>
         </mat-card-content>
     </mat-card>
