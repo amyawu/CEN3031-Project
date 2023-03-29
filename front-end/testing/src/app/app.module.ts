@@ -15,12 +15,14 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { RegisterComponent } from './register/register.component'; 
 import { AuthService } from './auth.service';
 import { UploadComponent } from './upload/upload.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
+    ProfileComponent,
     UploadComponent,
   ],
   imports: [

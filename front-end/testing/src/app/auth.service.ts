@@ -12,6 +12,8 @@ export class AuthService {
   //private _loginURL = "http://localhost:3000/api/login";
   private _loginURL = "http://localhost:8000/users/login";
 
+  private _profileURL = "http://localhost:8000/users/profile";
+
   constructor(private http: HttpClient) { }
 
   registerUser(user: any) {
@@ -20,5 +22,9 @@ export class AuthService {
 
   loginUser(user : any) {
     return this.http.post<any>(this._loginURL, user)
+  }
+
+  profileUser(user : any) {
+    return this.http.post<any>(this._profileURL, user)
   }
 }
