@@ -8,12 +8,13 @@ import (
 // User struct
 type User struct {
 	gorm.Model
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	ImgURL   string `json:"imgurl"`
-	Gender   string `json:"gender"`
-	Age      int    `json:"age"`
+	Name      string `json:"name"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
+	ImgURL    string `json:"imgurl"`
+	Gender    string `json:"gender"`
+	Age       int    `json:"age"`
+	Ethnicity int    `json:"ethnicity"`
 }
 
 func CreateDatabase() *gorm.DB {
