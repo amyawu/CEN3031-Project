@@ -1,6 +1,6 @@
 .main-div {
     margin: auto;
-    margin-top: 15%;
+    margin-top: 10%;
 }
 
 .main-div button {
@@ -17,7 +17,11 @@
     display: table-cell;
  }
 
-.mat-toolbar {
+
+ .mat-toolbar {
     border: 1px solid;
     background: #B067A1;
  }
+
+ 
+ 
