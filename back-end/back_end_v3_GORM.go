@@ -13,7 +13,6 @@ import (
 	"net/http"
 	"os/exec"
 	"regexp"
-	"strings"
 	config "web-service-gin/configs"
 	"web-service-gin/controllers"
 	"web-service-gin/models"
@@ -74,8 +73,7 @@ func getClassification(c *gin.Context) {
 
 func getUserImages(c *gin.Context) {
 	var req struct {
-		Email    string `json:"email" binding:"required"`
-		Password string `json:"password" binding:"required"`
+		Email string `json:"email" binding:"required"`
 	}
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -88,12 +86,8 @@ func getUserImages(c *gin.Context) {
 		return
 	}
 
-	directory_substr := "go-cloudinary/"
-
-	i := strings.Index(user.ImgURL, directory_substr)
-	fmt.Println(user.ImgURL[i+len(directory_substr):])
-	listImagesInDirectory(user.ImgURL[i+len(directory_substr):])
-
+	directory_substr := "go-cloudinary/" + user.Email
+	listImagesInDirectory(directory_substr)
 }
 
 // POST handlers
@@ -295,9 +289,7 @@ func listImagesInDirectory(dirName string) ([]string, error) {
 	// Set context
 	ctx := context.Background()
 
-	// Set folder path
-	//folderPath := "go-cloudinary"
-
+	fmt.Println("All folder names:")
 	resp, err := cld.Admin.RootFolders(ctx, admin.RootFoldersParams{})
 	for _, resource := range resp.Folders {
 		fmt.Println(resource.Name)
@@ -306,7 +298,7 @@ func listImagesInDirectory(dirName string) ([]string, error) {
 	}
 
 	// List resources in folder
-	resources, err := cld.Admin.Assets(ctx, admin.AssetsParams{Prefix: "go-cloudinary/anne", DeliveryType: "upload"})
+	resources, err := cld.Admin.Assets(ctx, admin.AssetsParams{Prefix: dirName, DeliveryType: "upload"})
 	if err != nil {
 		return nil, err
 	}
@@ -366,13 +358,12 @@ func main() {
 	config.AllowOrigins = []string{"http://localhost:4200", "http://localhost:8080", "http://localhost:8081"}
 	r.Use(cors.New(config))
 
-	listImagesInDirectory("lol")
-
 	// Define the routes
 	r.GET("/users", getUsers)
 	r.GET("/users/:id", getUser)
 	r.GET("/users/email", getUserByEmail)
 	r.GET("/users/:id/classify", getClassification)
+	r.GET("/users/images", getUserImages)
 
 	r.POST("/users", createUser)
 	r.POST("/users/login", verifyUser)
