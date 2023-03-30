@@ -29,6 +29,11 @@ export class AuthService {
   }
 
   loggedIn() {
-    return !!localStorage.getItem('token')
+    if (localStorage.getItem('token') == 'undefined'){
+      return false
+    }
+    else{
+      return true
+    }
   }
 }
