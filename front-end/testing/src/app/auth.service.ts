@@ -27,4 +27,8 @@ export class AuthService {
   profileUser(user : any) {
     return this.http.post<any>(this._profileURL, user)
   }
+
+  loggedIn() {
+    return !!localStorage.getItem('token')
+  }
 }
