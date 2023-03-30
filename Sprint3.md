@@ -29,7 +29,9 @@ TestGetUserByEmail - Similar to GetUser, but uses email as query parameter inste
 
 TestCreateUser - Checks if a user can be created using a POST request, requiring for the email and password to be unique.
 
+TestHashPassword - Tests to see if a password can be hashed for storage in bcrypt. Will fail if there's an error or if the hash is empty.
 
+TestUserLogin - Tests the comparison function from bcrypt to make sure that inputted password matches the saved hash password.
 
 # Backend Documentation
 Link: https://github.com/amyawu/CEN3031-Project/blob/main/Back-end%20Documentation.pdf
