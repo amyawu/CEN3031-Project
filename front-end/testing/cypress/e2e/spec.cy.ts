@@ -48,7 +48,7 @@ describe('visiting profile spec', () => {
 
   })
 
-  it('fills out the register form and submits it', () => {
+  it('fills out the profile form and submits it', () => {
     cy.visit('http://localhost:4200/profile')
     cy.get('.profile_name').type('John Doe')
     cy.get('.profile_gender').type('male')
