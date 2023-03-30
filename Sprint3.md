@@ -19,5 +19,17 @@ In the frontend,
 
 The backend has implemented more unit tests to test the hashing ability of bcrypt, as well as compare two hashed passwords together. 
 
+TestRouter - Checks if Gin router is properly being created
+
+TestGetUser - Checks if a User can be fetched by ID using a GET request
+
+TestVerifyUser - Checks if a given user's email and password matches that of an existing user in the database as POST request
+
+TestGetUserByEmail - Similar to GetUser, but uses email as query parameter instead
+
+TestCreateUser - Checks if a user can be created using a POST request, requiring for the email and password to be unique.
+
+
+
 # Backend Documentation
 Link: https://github.com/amyawu/CEN3031-Project/blob/main/Back-end%20Documentation.pdf
