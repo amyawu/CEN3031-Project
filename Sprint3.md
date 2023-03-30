@@ -1,6 +1,6 @@
 # Sprint 3 - Group 38
 # Github Link to Repository: https://github.com/amyawu/CEN3031-Project.git
-# Youtube Link:
+# Youtube Link: https://youtu.be/lRR2__19xAI
 
 # Work completed in Sprint 3
 
