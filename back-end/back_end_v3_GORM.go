@@ -128,7 +128,22 @@ func createUser(c *gin.Context) {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": user})
+
+	// create a new JWT token
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"sub": user.ID,                               // subject of the token is the user's ID
+		"exp": time.Now().Add(time.Hour * 24).Unix(), // expiration time is 24 hours from now
+	})
+
+	// sign the token with a secret key
+	tokenString, err := token.SignedString([]byte(jwtKey))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to generate token"})
+		return
+	}
+
+	// Send the token to the front-end
+	c.JSON(http.StatusOK, gin.H{"token": tokenString, "user": user})
 } //POST (create) a new user on SQLite database, /users
 
 func verifyUser(c *gin.Context) {
