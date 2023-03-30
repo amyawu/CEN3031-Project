@@ -5,20 +5,20 @@
             <form data-cy="profile_form" fxLayoutAlign="stretch" fxLayout="column" class="login-form">
                 <h4>NAME</h4>
                 <mat-form-field>
-                    <input class="profile_name" data-cy="profile_name" [(ngModel)]= "profileUserData.name" name = "name" type="text" matInput placeholder="Name">
+                    <input class="profile_name" data-cy="profile_name_data" [(ngModel)]= "profileUserData.name" name = "name" type="text" matInput placeholder="Name">
                 </mat-form-field>
                 <h4>GENDER</h4>
                 <mat-form-field>
-                    <input class="profile_gender" data-cy="profile_gender" [(ngModel)]= "profileUserData.gender" gender = "gender" type="text" matInput placeholder="Gender">
+                    <input class="profile_gender" data-cy="profile_gender_data" [(ngModel)]= "profileUserData.gender" gender = "gender" type="text" matInput placeholder="Gender">
                 </mat-form-field>
 
                 <h4>AGE</h4>
                 <mat-form-field>
-                    <input class="profile_age" data-cy="profile_age" [(ngModel)]= "profileUserData.age" name = "age" matInput type = "text" placeholder="Age">
+                    <input class="profile_age" data-cy="profile_age_data" [(ngModel)]= "profileUserData.age" name = "age" matInput type = "text" placeholder="Age">
                 </mat-form-field>
                 <h4>ETHNICITY</h4>
                 <mat-form-field>
-                    <input class="profile_ethnicity" data-cy="profile_ethnicity" [(ngModel)]= "profileUserData.ethnicity" gender = "ethnicity" type="text" matInput placeholder="Ethnicity">
+                    <input class="profile_ethnicity" data-cy="profile_ethnicity_data" [(ngModel)]= "profileUserData.ethnicity" gender = "ethnicity" type="text" matInput placeholder="Ethnicity">
                 </mat-form-field>
      <button class="profile_button_e2e" data-cy="profile_button" mat-raised-button type="Submit you fool">Submit</button> 
             </form>
