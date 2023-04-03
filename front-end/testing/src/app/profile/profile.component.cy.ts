@@ -13,40 +13,44 @@ describe('ProfileComponent', () => {
         })
       })
       
-      it.only('register without response', () => {
+      it.only('profile page without response', () => {
         cy.mount(ProfileComponent, {
             imports: [BrowserModule,
               HttpClientModule,
               FormsModule
           ]
           })
-        cy.get('[data-cy=register_form]').submit()
+        cy.get('[data-cy=profile_form]').submit()
       })
 
-      it.only('fill out login with response', () => {
+      it.only('fill out profile page with response', () => {
         cy.mount(ProfileComponent, {
             imports: [BrowserModule,
               HttpClientModule,
               FormsModule
           ]
           })
-        cy.get('[data-cy="register_email_data"]').type('email@gmail.com')
-        cy.get('[data-cy="register_password_data"]').type('emailemail')
+        cy.get('[data-cy="profile_name_data"]').type('John Doe')
+        cy.get('[data-cy="profile_gender_data"]').type('male')
+        cy.get('[data-cy="profile_age_data"]').type('21')
+        cy.get('[data-cy="profile_ethnicity_data"]').type('white')
     })
 
-    it.only('fill out login with response', () => {
+    it.only('fill out profile page with response and submit', () => {
         cy.mount(ProfileComponent, {
             imports: [BrowserModule,
               HttpClientModule,
               FormsModule
           ]
           })
-        cy.get('[data-cy="register_email_data"]').type('email@gmail.com')
-        cy.get('[data-cy="register_password_data"]').type('emailemail')
-        cy.get('[data-cy=register_form]').submit()
+          cy.get('[data-cy="profile_name_data"]').type('John Doe')
+          cy.get('[data-cy="profile_gender_data"]').type('male')
+          cy.get('[data-cy="profile_age_data"]').type('21')
+          cy.get('[data-cy="profile_ethnicity_data"]').type('white')
+        cy.get('[data-cy=profile_form]').submit()
     })
 
-    it.only('check if we can switch to register page from login', () => {
+    it.only('check if we can switch to login page from profile', () => {
         cy.mount(ProfileComponent, {
             imports: [BrowserModule,
               HttpClientModule,
@@ -55,7 +59,7 @@ describe('ProfileComponent', () => {
           })
           cy.get('[data-cy=login_button_register]').should('have.attr', 'href', '/login')
     })
-    it.only('switches to register page from login', () => {
+    it.only('switches to login page from profile', () => {
         cy.mount(ProfileComponent, {
             imports: [BrowserModule,
               HttpClientModule,

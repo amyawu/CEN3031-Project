@@ -27,4 +27,13 @@ export class AuthService {
   profileUser(user : any) {
     return this.http.post<any>(this._profileURL, user)
   }
+
+  loggedIn() {
+    if (localStorage.getItem('token') == 'undefined'){
+      return false
+    }
+    else{
+      return true
+    }
+  }
 }

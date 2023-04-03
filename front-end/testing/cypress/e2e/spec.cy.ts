@@ -41,3 +41,24 @@ describe('visiting upload spec', () => {
     cy.visit('http://localhost:4200/upload')
   })
 })
+
+describe('visiting profile spec', () => {
+  it('visiting profile site', () => {
+    cy.visit('http://localhost:4200/profile')
+
+  })
+
+  it('fills out the profile form and submits it', () => {
+    cy.visit('http://localhost:4200/profile')
+    cy.get('.profile_name').type('John Doe')
+    cy.get('.profile_gender').type('male')
+    cy.get('.profile_age').type('21')
+    cy.get('.profile_ethnicity').type('white')
+    cy.get('.profile_button_e2e').click()
+  })
+  it('check if the user wants to switch to login from profile', () => {
+    cy.visit('http://localhost:4200/profile')
+    cy.contains('Login').click()
+    cy.url().should('eq','http://localhost:4200/login')
+  })
+})

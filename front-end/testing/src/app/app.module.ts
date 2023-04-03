@@ -17,6 +17,7 @@ import { AuthService } from './auth.service';
 import { UploadComponent } from './upload/upload.component';
 import { ProfileComponent } from './profile/profile.component';
 import {MatSelectModule} from '@angular/material/select'; 
+import { AuthGuard } from './auth.guard';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,7 @@ import {MatSelectModule} from '@angular/material/select';
     FormsModule
   ],
   //schemas: [ NO_ERRORS_SCHEMA ],
-  providers: [AuthService],
+  providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

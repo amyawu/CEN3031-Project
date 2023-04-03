@@ -5,33 +5,22 @@
             <form data-cy="profile_form" fxLayoutAlign="stretch" fxLayout="column" class="login-form">
                 <h4>NAME</h4>
                 <mat-form-field>
-                    <input class="profile_name" data-cy="profile_name" [(ngModel)]= "profileUserData.name" name = "name" type="text" matInput placeholder="Name">
+                    <input class="profile_name" data-cy="profile_name_data" [(ngModel)]= "profileUserData.name" name = "name" type="text" matInput placeholder="Name">
                 </mat-form-field>
                 <h4>GENDER</h4>
-                <mat-form-field appearance="fill">
-                    <mat-label>Gender</mat-label>
-                <select>
-                    <option value="Female">Female</option>
-                    <option value="Male">Male</option>
-                </select>
+                <mat-form-field>
+                    <input class="profile_gender" data-cy="profile_gender_data" [(ngModel)]= "profileUserData.gender" gender = "gender" type="text" matInput placeholder="Gender">
                 </mat-form-field>
+
                 <h4>AGE</h4>
                 <mat-form-field>
-                    <input class="profile_age" data-cy="profile_age" [(ngModel)]= "profileUserData.age" name = "age" matInput type = "text" placeholder="Age">
+                    <input class="profile_age" data-cy="profile_age_data" [(ngModel)]= "profileUserData.age" name = "age" matInput type = "text" placeholder="Age">
                 </mat-form-field>
                 <h4>ETHNICITY</h4>
-                <mat-form-field appearance="fill">
-                    <mat-label>Ethnicity</mat-label>
-                <select>
-                    <option value="White">White</option>
-                    <option value="Black">Black</option>
-                    <option value="American Indian">American Indian</option>
-                    <option value="Asian">Asian</option>
-                    <option value="Other Pacific Islander">Other Pacific Islander</option>
-                </select>
+                <mat-form-field>
+                    <input class="profile_ethnicity" data-cy="profile_ethnicity" [(ngModel)]= "profileUserData.ethnicity" gender = "ethnicity" type="text" matInput placeholder="Ethnicity">
                 </mat-form-field>
-                
-     <button mat-raised-button type="Submit you fool">Submit</button> 
+     <button class="profile_button_e2e" data-cy="profile_button" mat-raised-button type="Submit you fool">Submit</button> 
             </form>
         </mat-card-content>
     </mat-card>
