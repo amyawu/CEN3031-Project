@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"crypto/rand"
 	"encoding/base64"
@@ -15,7 +16,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
-	"os/exec"
 	"regexp"
 	"time"
 	config "web-service-gin/configs"
@@ -65,14 +65,29 @@ func getClassification(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "user not found by ID"})
 		return
 	}
-	//Requires Conda environment names 'Tensorflow' with Tensorflow v.X.X.X installed
-	cmd := exec.Command("conda", "activate", "Tensorflow", "&&", "python", "./python_scripts/sample_network.py", user.ImgURL)
-	out, err := cmd.Output()
+
+	url := "http://localhost:8080/python"
+	fmt.Println("URL:>", url)
+	var jsonStr = []byte(`{"img_url":"` + user.ImgURL + `"}`)
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
+	req.Header.Set("Content-Type", "application/json")
+	client := &http.Client{}
+	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println("Error executing Python script:", err)
+		panic(err)
 	}
-	fmt.Println(string(out))
-	c.IndentedJSON(http.StatusOK, gin.H{"data": string(out)})
+	defer resp.Body.Close()
+
+	fmt.Println("response Status:", resp.Status)
+
+	////Requires Conda environment names 'Tensorflow' with Tensorflow v.X.X.X installed
+	//cmd := exec.Command("conda", "activate", "Tensorflow", "&&", "python", "./python_scripts/sample_network.py", user.ImgURL)
+	//out, err := cmd.Output()
+	//if err != nil {
+	//	fmt.Println("Error executing Python script:", err)
+	//}
+	//fmt.Println(string(out))
+	//c.IndentedJSON(http.StatusOK, gin.H{"data": string(out)})
 
 }
 
