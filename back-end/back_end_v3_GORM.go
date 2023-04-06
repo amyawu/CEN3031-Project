@@ -5,6 +5,7 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/admin"
@@ -208,6 +209,17 @@ func verifyUser(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(tokenString)
+
+	test, _ := verifyToken(tokenString)
+	claims, ok := test.Claims.(jwt.MapClaims)
+	if !ok {
+		fmt.Println("ERORR IS HAPPENING HERERERERE")
+	}
+
+	userID := int(claims["sub"].(float64))
+	fmt.Println(userID)
+
 	// Send the token to the front-end
 	c.JSON(http.StatusOK, gin.H{"token": tokenString, "user": user})
 }
@@ -224,10 +236,31 @@ func updateUser(c *gin.Context) {
 		return
 	}
 
-	//Checks that request body has valid user information
-	if err := c.ShouldBindJSON(&user); err != nil {
+	rawData, err := c.GetRawData()
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
+	}
+
+	if err := json.Unmarshal(rawData, &user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var jsonBody map[string]interface{}
+	if err := json.Unmarshal(rawData, &jsonBody); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if _, ok := jsonBody["password"]; ok {
+		byteArray, err := HashPassword(user.Password)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "password failed to hash"})
+		}
+
+		// Saved the hashed byte array password as a string, may change later.
+		user.Password = string(byteArray)
 	}
 
 	// Check if the email already exists in the database
@@ -379,12 +412,6 @@ func HashPassword(password string) ([]byte, error) {
 	return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 }
 
-// CheckPasswordHash compares a bcrypt hashed password with the inputted password. Returns nil on success, or an error on failure.
-// User passwords saved as hashed in database, so the "password" would be in the inputted password but would need to be to []byte.
-func CheckPasswordHash(password, hash []byte) error {
-	return bcrypt.CompareHashAndPassword(hash, password)
-}
-
 func retrieveUser(id string) (config.User, error) {
 	var user config.User
 
@@ -462,6 +489,8 @@ func genKey() {
 
 func verifyToken(tokenString string) (*jwt.Token, error) {
 	// Parse the token
+
+	fmt.Println("VERIFYING TOKEN")
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		// Validate the algorithm
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -471,15 +500,18 @@ func verifyToken(tokenString string) (*jwt.Token, error) {
 		// Return the secret key
 		return jwtKey, nil
 	})
+	fmt.Println("VERIFYING TOKEN")
 
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("VERIFYING TOKEN")
 
 	// Check if the token is valid
 	if _, ok := token.Claims.(jwt.Claims); !ok && !token.Valid {
 		return nil, fmt.Errorf("invalid token")
 	}
+	fmt.Println("VERIFYING TOKEN")
 
 	return token, nil
 }
