@@ -231,6 +231,67 @@ func verifyUser(c *gin.Context) {
 func updateUser(c *gin.Context) {
 	var user config.User // Declare a variable to hold the user.
 
+	rawData, err := c.GetRawData() // Read the request body into a byte slice.
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()}) // Return an error if reading fails.
+		return
+	}
+
+	var jsonBody map[string]interface{} // Declare a variable to hold the request body as a map.
+
+	if err := json.Unmarshal(rawData, &jsonBody); err != nil { // Unmarshal the request body into the jsonBody variable.
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()}) // Return an error if unmarshaling fails.
+		return
+	}
+
+	token, ok := jsonBody["token"]
+	if !ok {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()}) // Return an error if token not present
+		return
+
+	}
+
+	userID, _ := verifyToken(token.(string))
+	// Retrieve the user from the database by ID.
+	if err := db.First(&user, userID).Error; err != nil {
+		c.AbortWithStatus(http.StatusNotFound) // Return an error if the user is not found.
+		return
+	}
+
+	if err := json.Unmarshal(rawData, &user); err != nil { // Unmarshal the request body into the user variable.
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()}) // Return an error if unmarshaling fails.
+		return
+	}
+
+	if _, ok := jsonBody["password"]; ok { // Check if the password is present in the request body.
+		byteArray, err := HashPassword(user.Password) // Hash the new password using the HashPassword function.
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "password failed to hash"}) // Return an error if hashing fails.
+		}
+
+		user.Password = string(byteArray) // Set the user's password to the hashed password.
+	}
+
+	var existingUser config.User // Declare a variable to hold an existing user.
+
+	// Check if a user with the same email already exists in the database (excluding the current user).
+	if err := db.Where("email = ? AND id != ?", user.Email, userID).First(&existingUser).Error; err == nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "user with this email already exists"}) // Return an error if a user with the same email already exists.
+		return
+	}
+
+	if err := db.Save(&user).Error; err != nil { // Save the updated user in the database.
+		c.AbortWithStatus(http.StatusInternalServerError) // Return an error if saving fails.
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": user}) // Return the updated user as a JSON object.
+}
+
+// updateUserDEBUG updates a user in the database and returns the updated user as a JSON object, using ID as path param
+func updateUserDEBUG(c *gin.Context) {
+	var user config.User // Declare a variable to hold the user.
+
 	id := c.Param("id") // Get the user ID from the URL parameter.
 
 	// Retrieve the user from the database by ID.
@@ -515,10 +576,9 @@ func genKey() {
 	fmt.Println(base64.StdEncoding.EncodeToString(key))
 }
 
-func verifyToken(tokenString string) (*jwt.Token, error) {
+func verifyToken(tokenString string) (int, error) {
 	// Parse the token
 
-	fmt.Println("VERIFYING TOKEN")
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		// Validate the algorithm
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -528,20 +588,17 @@ func verifyToken(tokenString string) (*jwt.Token, error) {
 		// Return the secret key
 		return jwtKey, nil
 	})
-	fmt.Println("VERIFYING TOKEN")
 
 	if err != nil {
-		return nil, err
+		return 0, err
 	}
-	fmt.Println("VERIFYING TOKEN")
 
 	// Check if the token is valid
 	if _, ok := token.Claims.(jwt.Claims); !ok && !token.Valid {
-		return nil, fmt.Errorf("invalid token")
+		return 0, fmt.Errorf("invalid token")
 	}
-	fmt.Println("VERIFYING TOKEN")
 
-	return token, nil
+	return int(token.Claims.(jwt.MapClaims)["sub"].(float64)), nil
 }
 
 var db *gorm.DB = openDB()
@@ -574,7 +631,9 @@ func main() {
 	r.POST("/users", createUser)
 	r.POST("/users/login", verifyUser)
 
-	r.PUT("/users/:id", updateUser)
+	r.PUT("/users/:id", updateUserDEBUG)
+	r.PUT("/users/profile", updateUser)
+
 	r.PUT("/users/:id/image", uploadUserImageByID)
 	r.PUT("/users/image", uploadUserImage)
 	r.PUT("/users/:id/imageV2", uploadUserImageV2)
