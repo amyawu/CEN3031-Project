@@ -8,6 +8,7 @@ import (
 	"github.com/golang-jwt/jwt"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
+	"strings"
 	"time"
 	config "web-service-gin/configs"
 	"web-service-gin/models"
@@ -118,7 +119,10 @@ func getUserImages(c *gin.Context) {
 
 	directory_substr := "go-cloudinary/" + user.Email // Construct the directory path.
 
-	listImagesInDirectory(directory_substr) // List the images in the directory.
+	urls, _ := listImagesInDirectory(directory_substr) // List the images in the directory.
+
+	c.JSON(http.StatusOK, gin.H{"urls": urls})
+
 }
 
 // POST handlers
@@ -320,22 +324,24 @@ func uploadUserImageByID(c *gin.Context) {
 
 // uploadUserImage uploads an image for a user and updates the user's image URL in the database.
 func uploadUserImage(c *gin.Context) {
-	// Declare a struct to hold the request body.
-	var req struct {
-		Email string `json:"email" binding:"required"`
-	}
 
-	// Bind the request body to the req struct.
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()}) // Return an error if binding fails.
+	authHeader := c.GetHeader("Authorization")
+	tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
+
+	userID, err := verifyToken(tokenString)
+
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid JWT token"})
 		return
 	}
 
 	var user config.User // Declare a variable to hold the user.
 
-	// Retrieve the user from the database by email.
-	if err := db.Where("email = ?", req.Email).First(&user).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"}) // Return an error if the user is not found.
+	// Retrieve the user from the database by ID.
+	if err := db.First(&user, userID).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{ // Return an error if the user is not found.
+			"message": "No user was found with  the given ID",
+		})
 		return
 	}
 
@@ -359,6 +365,7 @@ func uploadUserImage(c *gin.Context) {
 	db.Save(&user) // Save the updated user in the database.
 
 	c.JSON(http.StatusOK, gin.H{"message": "image is uploaded"}) // Return a success message.
+
 }
 
 // uploadUserImageV2 uploads an image for a user and updates the user's image URL in the database.

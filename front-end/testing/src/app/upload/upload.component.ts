@@ -18,22 +18,38 @@ export class UploadComponent {
   }
 
   onUpload() {
+
+    if (!this.selectedFile) {
+      console.error('No file selected');
+      return;
+    }
+  
     const fdata = new FormData();
-    let test_name = "/C:/Users/manuc/Downloads/" + this.selectedFile.name 
-    //fdata.append('file', this.selectedFile, this.selectedFile.name);
-    fdata.append('file', this.selectedFile, test_name);
-    console.log("DEBUGGING MODE")
-    console.log(fdata.getAll)
-    console.log(fdata)
-
-    console.log(this.selectedFile.name);
-    console.log(this.selectedFile.webkitRelativePath);
-
-    console.log(test_name);
-
+    fdata.append('file', this.selectedFile, this.selectedFile.name);
+  
     this.http.post('http://localhost:8000/file', fdata)
-    .subscribe(res => {
-      console.log(res);
-    });
+      .subscribe(res => {
+        console.log(res);
+      });
+
+
+
+    // const fdata = new FormData();
+    // let test_name = "/C:/Users/manuc/Downloads/" + this.selectedFile.name 
+    // //fdata.append('file', this.selectedFile, this.selectedFile.name);
+    // fdata.append('file', this.selectedFile, test_name);
+    // console.log("DEBUGGING MODE")
+    // console.log(fdata.getAll)
+    // console.log(fdata)
+
+    // console.log(this.selectedFile.name);
+    // console.log(this.selectedFile.webkitRelativePath);
+
+    // console.log(test_name);
+
+    // this.http.post('http://localhost:8000/file', fdata)
+    // .subscribe(res => {
+    //   console.log(res);
+    // });
   }
 }

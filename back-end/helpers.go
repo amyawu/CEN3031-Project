@@ -71,12 +71,14 @@ func listImagesInDirectory(dirName string) ([]string, error) {
 	// List resources in folder
 	//resources, err := cld.Admin.ResourcesByContext(ctx, admin.ResourcesByContextParams{Prefix: folderPath})
 
-	// Print URLs of all images within a certain directory
+	// Create a slice of URLs
+	var urls []string
 	for _, resource := range resources.Assets {
 		fmt.Println(resource.SecureURL)
+		urls = append(urls, resource.SecureURL)
 	}
 
-	return nil, nil
+	return urls, nil
 }
 
 func genKey() {
