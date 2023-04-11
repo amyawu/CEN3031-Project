@@ -1,7 +1,7 @@
 import { HttpClientModule } from "@angular/common/http"
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { ProfileComponent } from "./home.component"
+import { HomeCmponent } from "./home.component"
 
 describe('ProfileComponent', () => {
     it('mounts', () => {
