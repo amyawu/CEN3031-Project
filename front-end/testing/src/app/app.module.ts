@@ -19,6 +19,7 @@ import { ProfileComponent } from './profile/profile.component';
 import {MatSelectModule} from '@angular/material/select'; 
 import { AuthGuard } from './auth.guard';
 import { HomeComponent } from './home/home.component';
+import { RecentsComponent } from './recents/recents.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { HomeComponent } from './home/home.component';
     RegisterComponent,
     ProfileComponent,
     UploadComponent,
-    HomeComponent
+    HomeComponent,
+    RecentsComponent
   ],
   imports: [
     BrowserModule,
