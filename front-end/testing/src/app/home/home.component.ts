@@ -1,21 +1,21 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
-export class ProfileComponent {
-  profileUserData:any = {};
+export class HomeComponent {
+  homeUserData:any = {};
 
   constructor(private _auth: AuthService) {}
 
-  profileUser() {
-    
-    console.log(this.profileUserData)
+  homeUser() {
+    console.log(this.homeUserData)
 
-    this._auth.profileUser(this.profileUserData)
+    this._auth.homeUser(this.homeUserData)
     .subscribe(
       (      res: any) => console.log(res),
       (      err: any) => console.log(err)

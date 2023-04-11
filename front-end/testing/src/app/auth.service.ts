@@ -14,6 +14,8 @@ export class AuthService {
 
   private _profileURL = "http://localhost:8000/users/profile";
 
+  private _homeURL = "http://localhost:8000/users/home";
+
   constructor(private http: HttpClient) { }
 
   registerUser(user: any) {
@@ -26,6 +28,10 @@ export class AuthService {
 
   profileUser(user : any) {
     return this.http.post<any>(this._profileURL, user)
+  }
+
+  homeUser(user : any) {
+    return this.http.post<any>(this._homeURL, user)
   }
 
   loggedIn() {

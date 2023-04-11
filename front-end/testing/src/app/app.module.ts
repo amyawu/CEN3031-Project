@@ -18,6 +18,7 @@ import { UploadComponent } from './upload/upload.component';
 import { ProfileComponent } from './profile/profile.component';
 import {MatSelectModule} from '@angular/material/select'; 
 import { AuthGuard } from './auth.guard';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { AuthGuard } from './auth.guard';
     RegisterComponent,
     ProfileComponent,
     UploadComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
