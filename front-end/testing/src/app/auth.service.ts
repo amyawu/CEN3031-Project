@@ -18,6 +18,8 @@ export class AuthService {
 
   private _recentsURL = "http://localhost:8000/users/recents";
 
+  private _accountURL = "http://localhost:8000/users/account";
+
   constructor(private http: HttpClient) { }
 
   registerUser(user: any) {
@@ -38,6 +40,10 @@ export class AuthService {
 
   recentsUser(user : any) {
     return this.http.post<any>(this._recentsURL, user)
+  }
+
+  accountUser(user : any) {
+    return this.http.post<any>(this._accountURL, user)
   }
 
   loggedIn() {

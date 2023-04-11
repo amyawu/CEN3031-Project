@@ -7,6 +7,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { AuthGuard } from './auth.guard';
 import { HomeComponent } from './home/home.component';
 import { RecentsComponent } from './recents/recents.component';
+import { AccountComponent } from './account/account.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/upload', pathMatch: 'full'},
@@ -15,7 +16,8 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   {path: 'upload', component: UploadComponent},
   {path: 'home', component: HomeComponent},
-  {path: 'recents', component: RecentsComponent}
+  {path: 'recents', component: RecentsComponent},
+  {path: 'account', component: AccountComponent}
 ];
 
 @NgModule({
