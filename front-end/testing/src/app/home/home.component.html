@@ -1,12 +1,16 @@
+<mat-toolbar color="primary">
+    <span>Melagoomba Home Page</span>
+    <span class="spacer"></span>
+    <button data-cy=home_button_profile href="/home" mat-flat-button style="background-color: #f7caca; width: 65px;" [routerLink]="['/home']">Home</button>
+    <button data-cy=home_button_profile href="/account" mat-flat-button style="background-color: #f7caca; width: 65px;" [routerLink]="['/account']">Profile</button>
+    <button data-cy=home_button_profile href="/upload" mat-flat-button style="background-color: #f7caca; width: 65px;" [routerLink]="['/upload']">Image</button>
+  </mat-toolbar>
+  
+
 <div fxLayout="column" fxLayoutAlign="center center" fxFlexFill class="main-div" fxFlexAlign = "stretch">
     <mat-card fxFlex="">
         <mat-card-content>
             <mat-toolbar>Melagoomba Home Page</mat-toolbar>
-            <div class = "button-row">
-                <button data-cy=home_button_profile href="/home" mat-raised-button style="background-color: #f7caca; width: 65px;" [routerLink]="['/home']">Home</button>
-                <button data-cy=home_button_profile href="/account" mat-raised-button style="background-color: #f7caca; width: 65px;" [routerLink]="['/account']">Profile</button>
-                <button data-cy=home_button_profile href="/upload" mat-raised-button style="background-color: #f7caca; width: 65px;" [routerLink]="['/upload']">Image</button>
-            </div>
             <span style="display: inline-block; width: 150px; vertical-align: top;">
                 <button data-cy=home_button_profile href="/profile" mat-raised-button style="background-color: #ffffff; width: 200px;" [routerLink]="['/profile']">Edit Profile</button>
                 <button data-cy=home_button_profile href="/recents" mat-raised-button style="background-color: #ffffff; width: 200px;" [routerLink]="['/recents']">Recents</button>

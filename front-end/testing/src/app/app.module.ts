@@ -18,6 +18,7 @@ import { UploadComponent } from './upload/upload.component';
 import { ProfileComponent } from './profile/profile.component';
 import {MatSelectModule} from '@angular/material/select'; 
 import { AuthGuard } from './auth.guard';
+import { MatIconModule } from '@angular/material/icon';
 import { HomeComponent } from './home/home.component';
 import { RecentsComponent } from './recents/recents.component';
 import { AccountComponent } from './account/account.component';
@@ -44,7 +45,8 @@ import { AccountComponent } from './account/account.component';
     MatCardModule, 
     HttpClientModule,
     MatToolbarModule,
-    FormsModule
+    FormsModule,
+    MatIconModule
   ],
   //schemas: [ NO_ERRORS_SCHEMA ],
   providers: [AuthService, AuthGuard],

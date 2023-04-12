@@ -27,5 +27,11 @@
     background: #f7caca;
  }
 
+ .spacer {
+    flex: 1 1 auto;
+  }
+  
+
+
  
  
