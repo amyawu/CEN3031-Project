@@ -21,3 +21,11 @@
     border: 1px solid;
     background: #E77577;
  }
+
+ .spacer {
+    flex: 1 1 auto;
+  }
+
+  .title {
+    width: 230px;
+  }
