@@ -21,3 +21,7 @@
  .main-div button {
     background: #FC6238;
 }
+
+.spacer {
+    flex: 1 1 auto;
+  }
