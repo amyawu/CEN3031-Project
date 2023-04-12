@@ -12,14 +12,17 @@ export class HomeComponent {
 
   constructor(private _auth: AuthService) {}
 
-  homeUser() {
-    
-    console.log(this.homeUserData)
+  get authService() {
+    return this._auth;
+  }
 
-    this._auth.profileUser(this.homeUserData)
+  homeUser() {
+    console.log(this.homeUserData);
+
+    this.authService.profileUser(this.homeUserData)
     .subscribe(
-      (      res: any) => console.log(res),
-      (      err: any) => console.log(err)
-    )
+      (res: any) => console.log(res),
+      (err: any) => console.log(err)
+    );
   }
 }

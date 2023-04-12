@@ -22,6 +22,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { HomeComponent } from './home/home.component';
 import { RecentsComponent } from './recents/recents.component';
 import { AccountComponent } from './account/account.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
@@ -36,6 +38,7 @@ import { AccountComponent } from './account/account.component';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule, 
     FlexLayoutModule, 
     MatFormFieldModule, 
