@@ -42,6 +42,21 @@ var db *gorm.DB = openDB()
 var jwtKey = []byte("ZkYcqWwhjK/TSFMY2eL21mZADY9x0w+UAqF4UwIRaAY=")
 
 func main() {
+	/*
+		// Initialize Firebase app with service account credentials
+		ctx := context.Background()
+		sa := option.WithCredentialsFile("/Documents/Private/melagoomba-firebase.json")
+		app, err := firebase.NewApp(ctx, nil, sa)
+		if err != nil {
+			log.Fatalf("Failed to initialize Firebase app: %v", err)
+		}
+		// Get a Firestore client from the Firebase app.
+		client, err := app.Firestore(ctx)
+		if err != nil {
+			log.Fatalf("Failed to get Firestore client: %v", err)
+		}
+		defer client.Close()
+	*/
 
 	//Database is being initialized globally
 	var err error
