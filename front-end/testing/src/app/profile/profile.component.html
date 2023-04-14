@@ -9,7 +9,7 @@
                 </mat-form-field>
                 <h4>GENDER</h4>
                 <mat-form-field>
-                    <input class="profile_gender" data-cy="profile_gender_data" [(ngModel)]= "profileUserData.gender" gender = "gender" type="text" matInput placeholder="Gender">
+                    <input class="profile_gender" data-cy="profile_gender_data" [(ngModel)]= "profileUserData.gender" name = "gender" type="text" matInput placeholder="Gender">
                 </mat-form-field>
 
                 <h4>AGE</h4>
@@ -18,9 +18,9 @@
                 </mat-form-field>
                 <h4>ETHNICITY</h4>
                 <mat-form-field>
-                    <input class="profile_ethnicity" data-cy="profile_ethnicity" [(ngModel)]= "profileUserData.ethnicity" gender = "ethnicity" type="text" matInput placeholder="Ethnicity">
+                    <input class="profile_ethnicity" data-cy="profile_ethnicity" [(ngModel)]= "profileUserData.ethnicity" name = "ethnicity" type="text" matInput placeholder="Ethnicity">
                 </mat-form-field>
-     <button class="profile_button_e2e" data-cy="profile_button" mat-raised-button type="Submit you fool">Submit</button> 
+     <button class="profile_button_e2e" (click)="profileUser()" data-cy="profile_button" mat-raised-button type="Submit you fool">Submit</button> 
             </form>
             <mat-toolbar>Melagoomba Profile Page</mat-toolbar>
         </mat-card-content>

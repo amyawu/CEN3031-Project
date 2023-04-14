@@ -55,4 +55,8 @@ export class AuthService {
     localStorage.removeItem('token')
     this._router.navigate(['/login'])
   }
+
+  submitProfile(user: any) {
+    return this.http.put<any>(this._profileURL, user)
+  }
 }
