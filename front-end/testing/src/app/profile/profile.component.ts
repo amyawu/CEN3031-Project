@@ -23,7 +23,6 @@ export class ProfileComponent {
     console.log(jsonobj)
 
     let full = Object.assign({}, jsonobj, this.profileUserData);
-    console.log(full)
 
 
     this._auth.submitProfile(full)
