@@ -43,19 +43,25 @@ var jwtKey = []byte("ZkYcqWwhjK/TSFMY2eL21mZADY9x0w+UAqF4UwIRaAY=")
 
 func main() {
 	/*
-		// Initialize Firebase app with service account credentials
-		ctx := context.Background()
-		sa := option.WithCredentialsFile("/Documents/Private/melagoomba-firebase.json")
-		app, err := firebase.NewApp(ctx, nil, sa)
-		if err != nil {
-			log.Fatalf("Failed to initialize Firebase app: %v", err)
+		opt := option.WithCredentialsFile("./private/melagoomba-firebase.json") // Firebase service key
+		firebase_config := &firebase.Config{
+			DatabaseURL: "https://melagoomba-default-rtdb.firebaseio.com/", // Firebase database URL
 		}
-		// Get a Firestore client from the Firebase app.
-		client, err := app.Firestore(ctx)
+
+		app, err := firebase.NewApp(context.Background(), firebase_config, opt)
 		if err != nil {
-			log.Fatalf("Failed to get Firestore client: %v", err)
+			log.Fatalf("Failed to intialize Firebase app: %v", err)
 		}
-		defer client.Close()
+		client, err := app.Database(context.Background())
+		if err != nil {
+			log.Fatalf("Failed to get Firebase database client: %v", err)
+		}
+
+		db, err := gorm.Open("sqlite3", .Ref("").URL.String()+"?charset=utf8&parseTime=True&loc=Local")
+		if err != nil {
+			log.Fatalf("Failed to open database connection: %v", err)
+		}
+		defer db.Close()
 	*/
 
 	//Database is being initialized globally
