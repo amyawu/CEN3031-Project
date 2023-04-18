@@ -14,7 +14,7 @@ type User struct {
 	ImgURL    string `json:"imgurl"`
 	Gender    string `json:"gender"`
 	Age       int    `json:"age"`
-	Ethnicity int    `json:"ethnicity"`
+	Ethnicity string `json:"ethnicity"`
 }
 
 func CreateDatabase() *gorm.DB {

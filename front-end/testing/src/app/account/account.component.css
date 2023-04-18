@@ -23,5 +23,12 @@
     background: #b3ff00;
  }
 
+ .spacer {
+    flex: 1 1 auto;
+  }
+
+  .title {
+    width: 230px;
+  }
  
  

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-upload',
@@ -10,7 +11,11 @@ import { HttpClient } from '@angular/common/http'
 export class UploadComponent {
   selectedFile:File = new File([], '');
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private _auth: AuthService) {}
+
+  get authService() {
+    return this._auth;
+  }
 
   onFileSelected(event) {
     console.log(event)

@@ -19,7 +19,7 @@ class Model:
         self.model = ResNet50(weights='imagenet')
 
 
-    def predict(self,img_url: str):
+    def predict(self,img_url: str) -> int:
         
         extension = img_url[-3:]
         img_path = "img." + extension
@@ -41,3 +41,5 @@ class Model:
 
         print(f'The image is classified as: {classification}')
         print(classification)
+
+        return classification

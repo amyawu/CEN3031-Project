@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -11,9 +12,16 @@ import (
 	"web-service-gin/controllers"
 )
 
+// Microsoft Azure SQL - Go Connection Code (from documentation)
+/*var db *sql.DB
+var server = "melagoomba.database.windows.net"
+var user = "melagoombaazure"
+var port = 1433
+var password = "password" // Not good practice to have password saved out in the open, need to define it in the shell as an environment variable
+var database = "melagoomba"*/
+
 func openDB() *gorm.DB {
 	//Connect to the SQLite database
-
 	db, err := gorm.Open("sqlite3", "test.db")
 	if err != nil {
 		log.Fatal(err)
@@ -42,6 +50,19 @@ var db *gorm.DB = openDB()
 var jwtKey = []byte("ZkYcqWwhjK/TSFMY2eL21mZADY9x0w+UAqF4UwIRaAY=")
 
 func main() {
+	/*// Azure-Go Connection Code (cont'd)
+	connString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%d;database=%s;", server, user, password, port, database)
+	var err error
+	db, err = sql.Open("sqlserver", connString)
+	if err != nil {
+		log.Fatal("Error creating connection pool: ", err.Error())
+	}
+	ctx := context.Background()
+	err = db.PingContext(ctx)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	fmt.Printf("Connected!")*/
 
 	//Database is being initialized globally
 	var err error

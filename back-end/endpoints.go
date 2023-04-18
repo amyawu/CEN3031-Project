@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
@@ -17,6 +18,10 @@ import (
 
 // File for handler functions, to clean up main. Production are the functions used in the program
 // Debug are for backend testing purposes.
+
+type ClassificationResponse struct {
+	Message string `json:"message"`
+}
 
 // PRODUCTION FUNCTIONS
 
@@ -76,10 +81,26 @@ func getClassification(c *gin.Context) {
 		return
 	}
 
+	// Call the classify function to get the classification response
+	response, err := classify(user.ImgURL)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to classify image",
+		})
+		return
+	}
+
+	// Set the JSON response in the Gin context
+	c.JSON(http.StatusOK, response)
+}
+
+// getClassification retrieves a user by ID and sends a POST request to a Python server with the user's image URL.
+func classify(imageURL string) (ClassificationResponse, error) {
+
 	url := "http://localhost:8080/python" // URL of the Python server.
 
 	// Create a JSON payload with the user's image URL.
-	var jsonStr = []byte(`{"img_url":"` + user.ImgURL + `"}`)
+	var jsonStr = []byte(`{"img_url":"` + imageURL + `"}`)
 
 	// Create a new POST request with the JSON payload.
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
@@ -94,6 +115,27 @@ func getClassification(c *gin.Context) {
 	defer resp.Body.Close() // Close the response body when done.
 
 	fmt.Println("response Status:", resp.Status) // Print the response status.
+
+	// Parse the JSON response body
+	var response map[string]interface{}
+	err = json.NewDecoder(resp.Body).Decode(&response)
+	if err != nil {
+		panic(err)
+	}
+
+	// Access the JSON data from the response
+	message, ok := response["message"].(string)
+	if !ok {
+		return ClassificationResponse{}, errors.New("Failed to parse JSON response")
+	}
+
+	fmt.Println("message:", message) // Print the "message" key from the response
+
+	// Create the response struct
+	returnVal := ClassificationResponse{
+		Message: message,
+	}
+	return returnVal, nil
 }
 
 // getUserImages retrieves a user by email and lists the images in the user's directory.

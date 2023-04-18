@@ -27,5 +27,14 @@
     background: #f7caca;
  }
 
+ .spacer {
+    flex: 1 1 auto;
+  }
+  
+  .title {
+    width: 230px;
+  }
+
+
  
  

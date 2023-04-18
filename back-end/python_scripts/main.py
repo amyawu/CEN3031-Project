@@ -14,8 +14,8 @@ class Image(BaseModel):
 
 @app.post("/python/")
 async def classify(image : Image):
-    model.predict(image.img_url)
-    return {"message": "Hello World"}
+    result = model.predict(image.img_url)
+    return {"message": result}
 
 
 
