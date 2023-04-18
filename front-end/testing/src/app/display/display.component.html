@@ -3,9 +3,8 @@
         <mat-card-content>
             <mat-toolbar>Melagoomba Display Page</mat-toolbar>
             <span style="display: inline-block; width: 150px; vertical-align: top;">
-                <button mat-raised-button style="background-color: #ffffff; width: 215px;" [routerLink]="['/upload']">Upload an Image</button>
-                <button data-cy=home_button_profile href="/profile" mat-raised-button style="background-color: #ffffff; width: 215px;" [routerLink]="['/profile']">Remove an Image</button>
-                <button data-cy=home_button_profile href="/home" mat-raised-button style="background-color: #ffffff; width: 215px;" [routerLink]="['/home']">Identify an Image</button>
+                <img src= "https://res.cloudinary.com/dlrf2kunl/image/upload/v1680792383/go-cloudinary/gavinbaltar04%40gmail.com/eeyepxbl33khrqkob4mz.jpg" alt="Image description" width="500" height="300">
+                <button mat-raised-button style="background-color: #ffffff; width: 215px;" (click)="displayUser()">Submit</button>
             </span>
             <mat-toolbar>Melagoomba Display Page</mat-toolbar>
         </mat-card-content>

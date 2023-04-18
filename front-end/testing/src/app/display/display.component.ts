@@ -13,13 +13,11 @@ export class DisplayComponent {
   constructor(private _auth: AuthService) {}
 
   displayUser() {
-    
-    console.log(this.displayUserData)
+    let token = localStorage.getItem('token');
+    let tstring = '{"token": ' + '"' + token + '"}';
+    let jsonobj = JSON.parse(tstring);
 
-    this._auth.displayUser(this.displayUserData)
-    .subscribe(
-      (      res: any) => console.log(res),
-      (      err: any) => console.log(err)
-    )
+    const imageURL = jsonobj;
+    console.log("this is the image url:" +jsonobj);
   }
 }
