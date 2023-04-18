@@ -1,0 +1,31 @@
+.main-div {
+    margin: auto;
+    margin-top: 10%;
+}
+
+.main-div button {
+    background: #B067A1;
+}
+
+.login-form {
+    border: 1px solid;
+    background: #FFF;
+    padding: 20px;
+}
+
+.button-row {
+    display: table-cell;
+ }
+
+ .button-col {
+    float:left;
+    margin-top:250px;
+ }
+
+ .mat-toolbar {
+    border: 1px solid;
+    background: #CDE8F1;
+ }
+
+ 
+ 

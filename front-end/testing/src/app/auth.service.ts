@@ -21,6 +21,8 @@ export class AuthService {
 
   private _accountURL = "http://localhost:8000/users/account";
 
+  private _displayURL = "http://localhost:8000/users/display";
+
   constructor(private http: HttpClient, private _router: Router) { }
 
   registerUser(user: any) {
@@ -45,6 +47,10 @@ export class AuthService {
 
   accountUser(user : any) {
     return this.http.post<any>(this._accountURL, user)
+  }
+
+  displayUser(user : any) {
+    return this.http.post<any>(this._displayURL, user)
   }
 
   loggedIn() {

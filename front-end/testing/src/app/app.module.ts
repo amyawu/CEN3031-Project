@@ -23,7 +23,7 @@ import { HomeComponent } from './home/home.component';
 import { RecentsComponent } from './recents/recents.component';
 import { AccountComponent } from './account/account.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { DisplayComponent } from './display/display.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +34,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     UploadComponent,
     HomeComponent,
     RecentsComponent,
-    AccountComponent
+    AccountComponent,
+    DisplayComponent
   ],
   imports: [
     BrowserModule,
