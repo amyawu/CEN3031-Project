@@ -13,6 +13,8 @@ export class ProfileComponent {
   constructor(private _auth: AuthService, private _router: Router) {}
 
   profileUser() {
+
+    this.profileUserData.age = parseInt(this.profileUserData.age, 10);
   
     let token = localStorage.getItem('token');
     console.log(typeof token)
