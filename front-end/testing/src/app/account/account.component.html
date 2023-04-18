@@ -14,10 +14,15 @@
             <mat-toolbar>Melagoomba Account Page</mat-toolbar>
             <form data-cy="profile_form" fxLayoutAlign="stretch" fxLayout="column" class="login-form">
                 <h4>NAME</h4>
+                <p>{{this.accountUserData.data?.name}}</p>
                 <h4>GENDER</h4>
+                <p>{{this.accountUserData.data?.gender}}</p>
                 <h4>AGE</h4>
+                <p>{{this.accountUserData.data?.age}}</p>
                 <h4>ETHNICITY</h4>
-            </form>
+                <p>{{this.accountUserData.data?.ethnicity}}</p>
+              </form>
+              
             <mat-toolbar>Melagoomba Account Page</mat-toolbar>
         </mat-card-content>
     </mat-card>
