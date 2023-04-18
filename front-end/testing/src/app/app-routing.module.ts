@@ -14,7 +14,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent}, 
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
-  {path: 'upload', component: UploadComponent, canActivate: [AuthGuard]},
+  {path: 'upload', component: UploadComponent},
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'recents', component: RecentsComponent, canActivate: [AuthGuard]},
   {path: 'account', component: AccountComponent, canActivate: [AuthGuard]},
