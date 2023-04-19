@@ -1,3 +1,15 @@
+<mat-toolbar color="primary">
+    <span class= "title">Melagoomba Home Page</span>
+    <button data-cy=home_button_profile href="/home" mat-flat-button style="background-color: #f7caca; width: 65px;" [routerLink]="['/home']">Home</button>
+    <button data-cy=home_button_profile href="/account" mat-flat-button style="background-color: #f7caca; width: 65px;" [routerLink]="['/account']">Profile</button>
+    <button data-cy=home_button_profile href="/upload" mat-flat-button style="background-color: #f7caca; width: 65px;" [routerLink]="['/upload']">Image</button>
+    <span class="spacer"></span>
+    <button data-cy=home_button_profile *ngIf="!authService.loggedIn()" href="/upload" mat-flat-button style="background-color: #f7caca; width: 65px;" [routerLink]="['/register']">Register</button>
+    <button data-cy=home_button_profile *ngIf="!authService.loggedIn()" href="/upload" mat-flat-button style="background-color: #f7caca; width: 65px;" [routerLink]="['/login']">Login</button>
+    <button data-cy=home_button_profile *ngIf="authService.loggedIn()" mat-flat-button style="background-color: #f7caca; width: 65px;" (click)="authService.logoutUser()">Logout</button>
+  </mat-toolbar>
+  
+
 <div fxLayout="column" fxLayoutAlign="center center" fxFlexFill class="main-div" fxFlexAlign = "stretch">
     <mat-card fxFlex="">
         <mat-card-content>
