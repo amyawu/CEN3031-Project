@@ -25,39 +25,35 @@ export class UploadComponent {
 
   onUpload() {
 
-    if (!this.selectedFile) {
-      console.error('No file selected');
+    if (!this.selectedFile || !this.selectedFile.name) {
+      alert('No file selected!');
       return;
     }
+    else{
   
     const fdata = new FormData();
     fdata.append('file', this.selectedFile, this.selectedFile.name);
   
-
-    this.http.post('http://localhost:8000/file', fdata)
-      .subscribe(res => {
-        console.log(res);
-        this.uploadUserData = res;
-      });
-
-
-
-    // const fdata = new FormData();
-    // let test_name = "/C:/Users/manuc/Downloads/" + this.selectedFile.name 
-    // //fdata.append('file', this.selectedFile, this.selectedFile.name);
-    // fdata.append('file', this.selectedFile, test_name);
-    // console.log("DEBUGGING MODE")
-    // console.log(fdata.getAll)
-    // console.log(fdata)
-
-    // console.log(this.selectedFile.name);
-    // console.log(this.selectedFile.webkitRelativePath);
-
-    // console.log(test_name);
-
-    // this.http.post('http://localhost:8000/file', fdata)
-    // .subscribe(res => {
-    //   console.log(res);
-    // });
+    const headers = {};
+  
+    // Check if the user is authenticated
+    if (this.authService.loggedIn()) {
+      // If the user is authenticated, set the Authorization header
+      const token = localStorage.getItem('token')
+      headers['Authorization'] = `Bearer ` + token;
+      this.http.post('http://localhost:8000/users/image', fdata, { headers })
+        .subscribe(res => {
+          console.log(res);
+          this.uploadUserData = res;
+        });
+    } else {
+      // If the user is not authenticated, send the image to a different endpoint
+      this.http.post('http://localhost:8000/file', fdata)
+        .subscribe(res => {
+          console.log(res);
+          this.uploadUserData = res;
+        });
   }
+  }
+}
 }

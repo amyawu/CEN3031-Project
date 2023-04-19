@@ -13,8 +13,8 @@ describe('HomeComponent', () => {
         })
       })
       
-      it.only('profile page without response', () => {
-        cy.mount(ProfileComponent, {
+      it.only('home page without response', () => {
+        cy.mount(HomeComponent, {
             imports: [BrowserModule,
               HttpClientModule,
               FormsModule
@@ -23,8 +23,8 @@ describe('HomeComponent', () => {
         cy.get('[data-cy=profile_form]').submit()
       })
 
-      it.only('fill out profile page with response', () => {
-        cy.mount(ProfileComponent, {
+      it.only('checks first button of home page', () => {
+        cy.mount(HomeComponent, {
             imports: [BrowserModule,
               HttpClientModule,
               FormsModule
@@ -36,8 +36,8 @@ describe('HomeComponent', () => {
         cy.get('[data-cy="profile_ethnicity_data"]').type('white')
     })
 
-    it.only('fill out profile page with response and submit', () => {
-        cy.mount(ProfileComponent, {
+    it.only('checks second button of home page', () => {
+        cy.mount(HomeComponent, {
             imports: [BrowserModule,
               HttpClientModule,
               FormsModule
@@ -50,8 +50,8 @@ describe('HomeComponent', () => {
         cy.get('[data-cy=profile_form]').submit()
     })
 
-    it.only('check if we can switch to login page from profile', () => {
-        cy.mount(ProfileComponent, {
+    it.only('checks third button of home page', () => {
+        cy.mount(HomeComponent, {
             imports: [BrowserModule,
               HttpClientModule,
               FormsModule

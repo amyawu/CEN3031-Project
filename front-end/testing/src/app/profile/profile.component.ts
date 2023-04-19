@@ -12,6 +12,10 @@ export class ProfileComponent {
 
   constructor(private _auth: AuthService, private _router: Router) {}
 
+  get authService() {
+    return this._auth;
+  }
+
   profileUser() {
 
     this.profileUserData.age = parseInt(this.profileUserData.age, 10);
