@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 	config "web-service-gin/configs"
+	"web-service-gin/dtos"
 	"web-service-gin/models"
 	"web-service-gin/services"
 )
@@ -141,21 +142,50 @@ func classify(imageURL string) (ClassificationResponse, error) {
 // getUserImages retrieves a user by email and lists the images in the user's directory.
 func getUserImages(c *gin.Context) {
 	// Declare a struct to hold the request body.
-	var req struct {
-		Email string `json:"email" binding:"required"`
-	}
-
-	// Bind the request body to the req struct.
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()}) // Return an error if binding fails.
-		return
-	}
+	//var req struct {
+	//	Email string `json:"email" binding:"required"`
+	//}
+	//
+	//// Bind the request body to the req struct.
+	//if err := c.ShouldBindJSON(&req); err != nil {
+	//	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()}) // Return an error if binding fails.
+	//	return
+	//}
+	//
+	//var user config.User // Declare a variable to hold the user.
+	//
+	//// Retrieve the user from the database by email.
+	//if err := db.Where("email = ?", req.Email).First(&user).Error; err != nil {
+	//	c.JSON(http.StatusNotFound, gin.H{"error": "User not found"}) // Return an error if the user is not found.
+	//	return
+	//}
 
 	var user config.User // Declare a variable to hold the user.
 
-	// Retrieve the user from the database by email.
-	if err := db.Where("email = ?", req.Email).First(&user).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"}) // Return an error if the user is not found.
+	rawData, err := c.GetRawData() // Read the request body into a byte slice.
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()}) // Return an error if reading fails.
+		return
+	}
+
+	var jsonBody map[string]interface{} // Declare a variable to hold the request body as a map.
+
+	if err := json.Unmarshal(rawData, &jsonBody); err != nil { // Unmarshal the request body into the jsonBody variable.
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()}) // Return an error if unmarshaling fails.
+		return
+	}
+
+	token, ok := jsonBody["token"]
+	if !ok {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()}) // Return an error if token not present
+		return
+
+	}
+
+	userID, _ := verifyToken(token.(string))
+	// Retrieve the user from the database by ID.
+	if err := db.First(&user, userID).Error; err != nil {
+		c.AbortWithStatus(http.StatusNotFound) // Return an error if the user is not found.
 		return
 	}
 
@@ -406,8 +436,14 @@ func uploadUserImage(c *gin.Context) {
 
 	db.Save(&user) // Save the updated user in the database.
 
-	c.JSON(http.StatusOK, gin.H{"message": "image is uploaded"}) // Return a success message.
-
+	//c.JSON(http.StatusOK, gin.H{"message": "image is uploaded"}) // Return a success message.
+	c.JSON(
+		http.StatusOK,
+		dtos.MediaDto{
+			StatusCode: http.StatusOK,
+			Message:    "1",
+			Data:       map[string]interface{}{"data": uploadUrl},
+		})
 }
 
 // uploadUserImageV2 uploads an image for a user and updates the user's image URL in the database.
