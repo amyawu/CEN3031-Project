@@ -425,12 +425,19 @@ func uploadUserImage(c *gin.Context) {
 		return
 	}
 
-	// Upload the file using the NewMediaUpload.FileUpload function.
-	uploadUrl, err := services.NewMediaUpload().FileUpload(models.File{File: formfile})
+	// Upload the file using the NewMediaUpload.FileUploadV2 function.
+	uploadUrl, err := services.NewMediaUpload().FileUploadV2(models.File{File: formfile}, user.Email)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError) // Return an error if uploading fails.
 		return
 	}
+
+	//// Upload the file using the NewMediaUpload.FileUpload function.
+	//uploadUrl, err := services.NewMediaUpload().FileUpload(models.File{File: formfile})
+	//if err != nil {
+	//	c.AbortWithStatus(http.StatusInternalServerError) // Return an error if uploading fails.
+	//	return
+	//}
 
 	user.ImgURL = uploadUrl // Set the user's image URL to the uploaded file's URL.
 
