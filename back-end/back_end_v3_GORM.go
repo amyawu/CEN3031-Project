@@ -99,7 +99,7 @@ func main() {
 	// Enable CORS
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"http://localhost:4200", "http://localhost:8080", "http://localhost:8081"}
-	config.AllowHeaders = []string{"authorization"}
+	config.AllowHeaders = []string{"Authorization"}
 	r.Use(cors.New(config))
 
 	// Define the routes
