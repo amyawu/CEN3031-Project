@@ -53,8 +53,14 @@ func FileUploadWithClassification() gin.HandlerFunc {
 		}
 
 		// Set the JSON response in the Gin context
-		c.JSON(http.StatusOK, response)
-
+		//c.JSON(http.StatusOK, response)
+		c.JSON(
+			http.StatusOK,
+			dtos.MediaDto{
+				StatusCode: http.StatusOK,
+				Message:    response.Message,
+				Data:       map[string]interface{}{"data": uploadUrl},
+			})
 	}
 }
 
@@ -133,7 +139,7 @@ func FileUpload() gin.HandlerFunc {
 			http.StatusOK,
 			dtos.MediaDto{
 				StatusCode: http.StatusOK,
-				Message:    "success",
+				Message:    "1",
 				Data:       map[string]interface{}{"data": uploadUrl},
 			})
 	}

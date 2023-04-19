@@ -8,20 +8,22 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"log"
+	"os"
 	config "web-service-gin/configs"
 	"web-service-gin/controllers"
 )
 
 // Microsoft Azure SQL - Go Connection Code (from documentation)
-/*var db *sql.DB
+// var db *sql.DB
 var server = os.Getenv("DB_SERVER")
 var user = os.Getenv("DB_USER")
 var port = os.Getenv("DB_PORT")
 var password = os.Getenv("DB_PASSWORD") // Not good practice to have password saved out in the open, need to define it in the shell as an environment variable
-var database = os.Getenv("DB_DATABASE")*/
+var database = os.Getenv("DB_DATABASE")
 
 func openDB() *gorm.DB {
-	//Connect to the SQLite database
+
+	////Connect to the SQLite database - MANUEL
 	db, err := gorm.Open("sqlite3", "test.db")
 	if err != nil {
 		log.Fatal(err)
@@ -33,15 +35,30 @@ func openDB() *gorm.DB {
 		return nil
 	}
 
-	//-----------------------
-	//dsn := "manuel.cortes:cen3031melanoma@tcp(mysql.cise.ufl.edu:3306)/Users" //?charset=utf8mb4
-	//db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	//if err != nil {
-	//	panic("failed to connect database")
+	//Connect to the SQLite database - GAVIN
+	//var errenv error
+	//errenv = godotenv.Load(".env")
+	//if errenv != nil {
+	//	log.Fatalf("Error loading .env.local file: %v", errenv)
 	//}
-	//db.AutoMigrate(&config.User{})
-	//----------------------
-
+	//
+	//// Azure-Go Connection Code (cont'd)
+	////connString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%d;database=%s;", server, user, password, port, database)
+	////connString := fmt.Sprintf("sqlserver://%s:%s@%s.database.windows.net:%d?database=%s", user, password, server, port, database)
+	//connString := fmt.Sprintf("server=%s;user id=%s;password=%s;database=%s;port=%d;encrypt=true;"+
+	//	"connection timeout=30;", server, user, password, database, port)
+	//
+	//db, err := gorm.Open("sqlserver", connString)
+	//if err != nil {
+	//	log.Fatal("Error creating connection pool: ", err.Error())
+	//}
+	//
+	//// Automatically create the "users" table based on the User struct
+	//if err := db.AutoMigrate(&config.User{}).Error; err != nil {
+	//	db.Close()
+	//	return nil
+	//}
+	//
 	return db
 }
 
@@ -50,25 +67,25 @@ var db *gorm.DB = openDB()
 var jwtKey = []byte("ZkYcqWwhjK/TSFMY2eL21mZADY9x0w+UAqF4UwIRaAY=")
 
 func main() {
-	/*var errenv error
-	errenv = godotenv.Load(".env")
-	if errenv != nil {
-		log.Fatalf("Error loading .env.local file: %v", errenv)
-	}
-
-	// Azure-Go Connection Code (cont'd)
-	connString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%d;database=%s;", server, user, password, port, database)
-	var err error
-	db, err = sql.Open("sqlserver", connString)
-	if err != nil {
-		log.Fatal("Error creating connection pool: ", err.Error())
-	}
-	ctx := context.Background()
-	err = db.PingContext(ctx)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	fmt.Printf("Connected!")*/
+	//var errenv error
+	//errenv = godotenv.Load(".env")
+	//if errenv != nil {
+	//	log.Fatalf("Error loading .env.local file: %v", errenv)
+	//}
+	//
+	//// Azure-Go Connection Code (cont'd)
+	//connString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%d;database=%s;", server, user, password, port, database)
+	//var err error
+	//db, err = sql.Open("sqlserver", connString)
+	//if err != nil {
+	//	log.Fatal("Error creating connection pool: ", err.Error())
+	//}
+	//ctx := context.Background()
+	//err = db.PingContext(ctx)
+	//if err != nil {
+	//	log.Fatal(err.Error())
+	//}
+	//fmt.Printf("Connected!")
 
 	//Database is being initialized globally
 	var err error
