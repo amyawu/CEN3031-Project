@@ -3,9 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { DisplayComponent } from "./display.component"
 
-describe('ProfileComponent', () => {
+describe('DisplayComponent', () => {
     it('mounts', () => {
-        cy.mount(ProfileComponent, {
+        cy.mount(DisplayComponent, {
           imports: [BrowserModule,
             HttpClientModule,
             FormsModule
