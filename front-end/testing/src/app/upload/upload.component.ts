@@ -44,12 +44,14 @@ export class UploadComponent {
       this.http.post('http://localhost:8000/users/image', fdata, { headers })
         .subscribe(res => {
           console.log(res);
+          this.uploadUserData = res;
         });
     } else {
       // If the user is not authenticated, send the image to a different endpoint
       this.http.post('http://localhost:8000/file', fdata)
         .subscribe(res => {
           console.log(res);
+          this.uploadUserData = res;
         });
   }
   }
