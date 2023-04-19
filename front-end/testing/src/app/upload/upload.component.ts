@@ -9,6 +9,7 @@ import { AuthService } from '../auth.service';
 })
 
 export class UploadComponent {
+  uploadUserData:any = {};
   selectedFile:File = new File([], '');
 
   constructor(private http: HttpClient, private _auth: AuthService) {}
@@ -32,9 +33,11 @@ export class UploadComponent {
     const fdata = new FormData();
     fdata.append('file', this.selectedFile, this.selectedFile.name);
   
+
     this.http.post('http://localhost:8000/file', fdata)
       .subscribe(res => {
         console.log(res);
+        this.uploadUserData = res;
       });
 
 
