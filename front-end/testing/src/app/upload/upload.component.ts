@@ -25,10 +25,11 @@ export class UploadComponent {
 
   onUpload() {
 
-    if (!this.selectedFile) {
-      console.error('No file selected');
+    if (!this.selectedFile || !this.selectedFile.name) {
+      alert('No file selected!');
       return;
     }
+    else{
   
     const fdata = new FormData();
     fdata.append('file', this.selectedFile, this.selectedFile.name);
@@ -52,4 +53,5 @@ export class UploadComponent {
         });
   }
   }
+}
 }
