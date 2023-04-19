@@ -51,7 +51,7 @@ var jwtKey = []byte("ZkYcqWwhjK/TSFMY2eL21mZADY9x0w+UAqF4UwIRaAY=")
 
 func main() {
 	/*var errenv error
-	errenv = godotenv.Load(".env.local")
+	errenv = godotenv.Load(".env")
 	if errenv != nil {
 		log.Fatalf("Error loading .env.local file: %v", errenv)
 	}
