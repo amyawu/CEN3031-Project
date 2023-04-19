@@ -18,6 +18,7 @@
                 <button data-cy="upload_button" (click) = "onUpload()" mat-raised-button>Upload</button>  
             </form>
             <img src= {{this.uploadUserData.data?.data}} alt="Uploaded Image Here" width="500" height="300">
+            <p> "This is"+{{this.uploadUserData.data?.message}} </p>
             <mat-toolbar>Melagoomba Image Upload Page</mat-toolbar>
         </mat-card-content>
     </mat-card>

@@ -10,7 +10,7 @@ import { RecentsComponent } from './recents/recents.component';
 import { AccountComponent } from './account/account.component';
 import { DisplayComponent } from './display/display.component';
 const routes: Routes = [
-  {path: '', redirectTo: '/upload', pathMatch: 'full'},
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'login', component: LoginComponent}, 
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
