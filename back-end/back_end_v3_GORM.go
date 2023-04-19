@@ -98,6 +98,8 @@ func main() {
 	r.DELETE("/users/:id", deleteUser)
 
 	//Image upload
+	r.POST("/file/classify", controllers.FileUploadWithClassification()) // localhost:8000/file  --> Cloudinary
+
 	r.POST("/file", controllers.FileUpload()) // localhost:8000/file  --> Cloudinary
 	r.POST("/remote", controllers.RemoteUpload())
 
