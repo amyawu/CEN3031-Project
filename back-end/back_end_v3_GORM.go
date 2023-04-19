@@ -14,11 +14,11 @@ import (
 
 // Microsoft Azure SQL - Go Connection Code (from documentation)
 /*var db *sql.DB
-var server = "melagoomba.database.windows.net"
-var user = "melagoombaazure"
-var port = 1433
-var password = "password" // Not good practice to have password saved out in the open, need to define it in the shell as an environment variable
-var database = "melagoomba"*/
+var server = os.Getenv("DB_SERVER")
+var user = os.Getenv("DB_USER")
+var port = os.Getenv("DB_PORT")
+var password = os.Getenv("DB_PASSWORD") // Not good practice to have password saved out in the open, need to define it in the shell as an environment variable
+var database = os.Getenv("DB_DATABASE")*/
 
 func openDB() *gorm.DB {
 	//Connect to the SQLite database
@@ -50,7 +50,13 @@ var db *gorm.DB = openDB()
 var jwtKey = []byte("ZkYcqWwhjK/TSFMY2eL21mZADY9x0w+UAqF4UwIRaAY=")
 
 func main() {
-	/*// Azure-Go Connection Code (cont'd)
+	/*var errenv error
+	errenv = godotenv.Load(".env.local")
+	if errenv != nil {
+		log.Fatalf("Error loading .env.local file: %v", errenv)
+	}
+
+	// Azure-Go Connection Code (cont'd)
 	connString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%d;database=%s;", server, user, password, port, database)
 	var err error
 	db, err = sql.Open("sqlserver", connString)
