@@ -3,7 +3,6 @@
   "compileOnSave": false,
   "compilerOptions": {
     "allowJs": true,
-    "baseUrl": "../node_modules",
     "types": ["cypress"],
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",

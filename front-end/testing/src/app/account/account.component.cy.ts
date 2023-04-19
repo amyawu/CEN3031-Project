@@ -1,11 +1,11 @@
 import { HttpClientModule } from "@angular/common/http"
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { ProfileComponent } from "./account.component"
+import { AccountComponent } from "./account.component"
 
-describe('ProfileComponent', () => {
+describe('Account Page', () => {
     it('mounts', () => {
-        cy.mount(ProfileComponent, {
+        cy.mount(AccountComponent, {
           imports: [BrowserModule,
             HttpClientModule,
             FormsModule
