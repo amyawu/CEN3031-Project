@@ -14,6 +14,10 @@ export class AccountComponent {
     this.updateProfile();
   }
 
+  get authService() {
+    return this._auth;
+  }
+
   updateProfile() {
     let token = localStorage.getItem('token');
     let tstring = '{"token": ' + '"' + token + '"}';
