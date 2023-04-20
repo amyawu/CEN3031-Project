@@ -23,7 +23,7 @@ describe('HomeComponent', () => {
         
           cy.get('[data-cy=home_profile_button_home]').should('have.attr', 'href', '/profile')
     })
-    it.only('switches to login page from profile', () => {
+    it.only('switches to said button from home page', () => {
       cy.mount(HomeComponent, {
           imports: [BrowserModule,
             HttpClientModule,
@@ -43,7 +43,7 @@ describe('HomeComponent', () => {
           
           cy.get('[data-cy=home_recents_button_home]').should('have.attr', 'href', '/display')
     })
-    it.only('switches to login page from profile', () => {
+    it.only('switches to said button from home page', () => {
       cy.mount(HomeComponent, {
           imports: [BrowserModule,
             HttpClientModule,
@@ -62,7 +62,7 @@ describe('HomeComponent', () => {
           })
           cy.get('[data-cy=home_upload_button_home]').should('have.attr', 'href', '/upload')
     })
-    it.only('switches to login page from profile', () => {
+    it.only('switches to said button from home page', () => {
         cy.mount(HomeComponent, {
             imports: [BrowserModule,
               HttpClientModule,
