@@ -12,16 +12,6 @@ describe('HomeComponent', () => {
         ]
         })
       })
-      
-      it.only('home page without response', () => {
-        cy.mount(HomeComponent, {
-            imports: [BrowserModule,
-              HttpClientModule,
-              FormsModule
-          ]
-          })
-        cy.get('[data-cy=profile_form]').submit()
-      })
 
       it.only('checks first button of home page', () => {
         cy.mount(HomeComponent, {
@@ -30,12 +20,19 @@ describe('HomeComponent', () => {
               FormsModule
           ]
           })
-        cy.get('[data-cy="profile_name_data"]').type('John Doe')
-        cy.get('[data-cy="profile_gender_data"]').type('male')
-        cy.get('[data-cy="profile_age_data"]').type('21')
-        cy.get('[data-cy="profile_ethnicity_data"]').type('white')
+        
+          cy.get('[data-cy=home_profile_button_home]').should('have.attr', 'href', '/profile')
     })
-
+    it.only('switches to login page from profile', () => {
+      cy.mount(HomeComponent, {
+          imports: [BrowserModule,
+            HttpClientModule,
+            FormsModule
+        ]
+        })
+        cy.get('[data-cy=home_profile_button_home]').should('have.attr', 'href', '/profile')
+        cy.get('[data-cy=home_profile_button_home]').click();
+  })
     it.only('checks second button of home page', () => {
         cy.mount(HomeComponent, {
             imports: [BrowserModule,
@@ -43,13 +40,19 @@ describe('HomeComponent', () => {
               FormsModule
           ]
           })
-          cy.get('[data-cy="profile_name_data"]').type('John Doe')
-          cy.get('[data-cy="profile_gender_data"]').type('male')
-          cy.get('[data-cy="profile_age_data"]').type('21')
-          cy.get('[data-cy="profile_ethnicity_data"]').type('white')
-        cy.get('[data-cy=profile_form]').submit()
+          
+          cy.get('[data-cy=home_recents_button_home]').should('have.attr', 'href', '/display')
     })
-
+    it.only('switches to login page from profile', () => {
+      cy.mount(HomeComponent, {
+          imports: [BrowserModule,
+            HttpClientModule,
+            FormsModule
+        ]
+        })
+        cy.get('[data-cy=home_recents_button_home]').should('have.attr', 'href', '/display')
+        cy.get('[data-cy=home_recents_button_home]').click();
+  })
     it.only('checks third button of home page', () => {
         cy.mount(HomeComponent, {
             imports: [BrowserModule,
@@ -57,16 +60,16 @@ describe('HomeComponent', () => {
               FormsModule
           ]
           })
-          cy.get('[data-cy=login_button_register]').should('have.attr', 'href', '/login')
+          cy.get('[data-cy=home_upload_button_home]').should('have.attr', 'href', '/upload')
     })
     it.only('switches to login page from profile', () => {
-        cy.mount(ProfileComponent, {
+        cy.mount(HomeComponent, {
             imports: [BrowserModule,
               HttpClientModule,
               FormsModule
           ]
           })
-          cy.get('[data-cy=login_button_register]').should('have.attr', 'href', '/login')
-          cy.get('[data-cy=login_button_register]').click();
+          cy.get('[data-cy=home_upload_button_home]').should('have.attr', 'href', '/upload')
+          cy.get('[data-cy=home_upload_button_home]').click();
     })
 })
