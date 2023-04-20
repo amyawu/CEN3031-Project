@@ -26,6 +26,16 @@ describe('visiting login spec', () => {
 })
 
 describe('visiting upload spec', () => {
+  it('visiting login site', () => {
+    cy.visit('http://localhost:4200/login')
+  })
+
+  it('fills out the login form and submits it', () => {
+    cy.visit('http://localhost:4200/login')
+    cy.get('.login_username').type('email@gmail.com')
+    cy.get('.login_password').type('emailemail')
+    cy.get('.login_button_e2e').click()
+  })
   it('visiting upload site', () => {
     cy.visit('http://localhost:4200/upload')
   })
@@ -37,6 +47,16 @@ describe('visiting upload spec', () => {
 })
 
 describe('visiting profile spec', () => {
+  it('visiting login site', () => {
+    cy.visit('http://localhost:4200/login')
+  })
+
+  it('fills out the login form and submits it', () => {
+    cy.visit('http://localhost:4200/login')
+    cy.get('.login_username').type('email@gmail.com')
+    cy.get('.login_password').type('emailemail')
+    cy.get('.login_button_e2e').click()
+  })
   it('visiting profile site', () => {
     cy.visit('http://localhost:4200/profile')
 
@@ -64,6 +84,16 @@ describe('visiting profile spec', () => {
 })
 
   describe('visiting account spec', () => {
+    it('visiting login site', () => {
+      cy.visit('http://localhost:4200/login')
+    })
+  
+    it('fills out the login form and submits it', () => {
+      cy.visit('http://localhost:4200/login')
+      cy.get('.login_username').type('email@gmail.com')
+      cy.get('.login_password').type('emailemail')
+      cy.get('.login_button_e2e').click()
+    })
     it('visiting account site', () => {
       cy.visit('http://localhost:4200/account')
     })
@@ -75,6 +105,16 @@ describe('visiting profile spec', () => {
   })
 
   describe('visiting home spec', () => {
+    it('visiting login site', () => {
+      cy.visit('http://localhost:4200/login')
+    })
+  
+    it('fills out the login form and submits it', () => {
+      cy.visit('http://localhost:4200/login')
+      cy.get('.login_username').type('email@gmail.com')
+      cy.get('.login_password').type('emailemail')
+      cy.get('.login_button_e2e').click()
+    })
     it('visiting home site', () => {
       cy.visit('http://localhost:4200/home')
     })
@@ -97,6 +137,16 @@ describe('visiting profile spec', () => {
 
 
   describe('visiting display spec', () => {
+    it('visiting login site', () => {
+      cy.visit('http://localhost:4200/login')
+    })
+  
+    it('fills out the login form and submits it', () => {
+      cy.visit('http://localhost:4200/login')
+      cy.get('.login_username').type('email@gmail.com')
+      cy.get('.login_password').type('emailemail')
+      cy.get('.login_button_e2e').click()
+    })
     it('visiting display site', () => {
       cy.visit('http://localhost:4200/display')
     })
