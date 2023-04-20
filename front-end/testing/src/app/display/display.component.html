@@ -9,8 +9,16 @@
     <button data-cy=home_button_profile *ngIf="authService.loggedIn()" mat-flat-button style="background-color: #009B77; width: 65px;" (click)="authService.logoutUser()">Logout</button>
   </mat-toolbar>
 
+  <div fxLayout="column" fxLayoutAlign="center center" fxFlexFill class="main-div" fxFlexAlign = "stretch">
+    <mat-card fxFlex="">
+        <mat-card-content>
+            <mat-toolbar>Melagoomba Display Page</mat-toolbar>
   <div class="image-container">
     <img *ngFor="let url of imageUrls" [src]="url">
   </div>
+  <mat-toolbar>Melagoomba Display Page</mat-toolbar>
+</mat-card-content>
+</mat-card>
+</div>  
   
   
