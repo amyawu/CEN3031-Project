@@ -31,7 +31,7 @@ describe('visiting upload spec', () => {
   })
   it('check if the user wants to switch to display from upload', () => {
     cy.visit('http://localhost:4200/upload')
-    cy.contains('Display your images').click()
+    cy.contains('.display_images').click()
     cy.url().should('eq','http://localhost:4200/display')
   })
 })
@@ -52,12 +52,12 @@ describe('visiting profile spec', () => {
   })
   it('check if the user wants to switch to login from profile', () => {
     cy.visit('http://localhost:4200/profile')
-    cy.contains('Login').click()
+    cy.contains('.login').click()
     cy.url().should('eq','http://localhost:4200/login')
   })
   it('check if the user wants to switch to account from profile', () => {
     cy.visit('http://localhost:4200/profile')
-    cy.contains('Display Info').click()
+    cy.contains('.display_Info').click()
     cy.url().should('eq','http://localhost:4200/account')
   })
   
@@ -69,7 +69,7 @@ describe('visiting profile spec', () => {
     })
     it('check if the user wants to switch to profile from account', () => {
       cy.visit('http://localhost:4200/account')
-      cy.contains('Update Info').click()
+      cy.contains('.update').click()
       cy.url().should('eq','http://localhost:4200/profile')
     })
   })
@@ -80,17 +80,17 @@ describe('visiting profile spec', () => {
     })
     it('visiting home site + testing 1st button', () => {
       cy.visit('http://localhost:4200/home')
-      cy.contains('Edit Profile').click()
+      cy.contains('.profile').click()
       cy.url().should('eq','http://localhost:4200/profile')
     })
     it('visiting home site + testing 2nd button', () => {
       cy.visit('http://localhost:4200/home')
-      cy.contains('Display Recents').click()
+      cy.contains('.display').click()
       cy.url().should('eq','http://localhost:4200/display')
     })
     it('visiting home site + + testing 3rd button', () => {
       cy.visit('http://localhost:4200/home')
-      cy.contains('Upload an Image').click()
+      cy.contains('.upload').click()
       cy.url().should('eq','http://localhost:4200/upload')
     })
   })
@@ -102,7 +102,7 @@ describe('visiting profile spec', () => {
     })
     it('check if the user wants to switch to upload from display', () => {
       cy.visit('http://localhost:4200/display')
-      cy.contains('Upload your images').click()
+      cy.contains('.upload').click()
       cy.url().should('eq','http://localhost:4200/upload')
     })
   })
