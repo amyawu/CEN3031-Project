@@ -20,3 +20,5 @@ On the other hand, we created unit tests for the secondary backend for FAST API.
 
 # Backend Documentation
 Link: https://github.com/amyawu/CEN3031-Project/blob/main/Back-end%20Documentation.pdf
+
+# Frontend Documentation
