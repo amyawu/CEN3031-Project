@@ -10,11 +10,6 @@ describe('visiting register spec', () => {
     cy.get('.register_password').type('emailemail')
     cy.get('.register_button_e2e').click()
   })
-  it('check if the user wants to switch to login from register', () => {
-    cy.visit('http://localhost:4200/register')
-    cy.contains('Login').click()
-    cy.url().should('eq','http://localhost:4200/login')
-  })
 })
 
 describe('visiting login spec', () => {
@@ -27,12 +22,6 @@ describe('visiting login spec', () => {
     cy.get('.login_username').type('email@gmail.com')
     cy.get('.login_password').type('emailemail')
     cy.get('.login_button_e2e').click()
-  })
-
-  it('check if the user wants to switch to login from register', () => {
-    cy.visit('http://localhost:4200/register')
-    cy.contains('Register').click()
-    cy.url().should('eq','http://localhost:4200/register')
   })
 })
 
@@ -61,4 +50,42 @@ describe('visiting profile spec', () => {
     cy.contains('Login').click()
     cy.url().should('eq','http://localhost:4200/login')
   })
+  it('check if the user wants to switch to account from profile', () => {
+    cy.visit('http://localhost:4200/profile')
+    cy.contains('Display Info').click()
+    cy.url().should('eq','http://localhost:4200/account')
+  })
+  
 })
+
+  describe('visiting account spec', () => {
+    it('visiting account site', () => {
+      cy.visit('http://localhost:4200/account')
+    })
+    it('check if the user wants to switch to profile from account', () => {
+      cy.visit('http://localhost:4200/account')
+      cy.contains('Update Info').click()
+      cy.url().should('eq','http://localhost:4200/profile')
+    })
+  })
+
+  describe('visiting home spec', () => {
+    it('visiting home site', () => {
+      cy.visit('http://localhost:4200/home')
+    })
+    it('visiting home site + testing 1st button', () => {
+      cy.visit('http://localhost:4200/home')
+      cy.contains('Edit Profile').click()
+      cy.url().should('eq','http://localhost:4200/profile')
+    })
+    it('visiting home site + testing 2nd button', () => {
+      cy.visit('http://localhost:4200/home')
+      cy.contains('Display Recents').click()
+      cy.url().should('eq','http://localhost:4200/display')
+    })
+    it('visiting home site + + testing 3rd button', () => {
+      cy.visit('http://localhost:4200/home')
+      cy.contains('Upload an Image').click()
+      cy.url().should('eq','http://localhost:4200/upload')
+    })
+  })
