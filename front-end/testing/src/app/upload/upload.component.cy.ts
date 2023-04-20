@@ -13,7 +13,7 @@ describe('UploadComponent', () => {
         })
       })
       
-      it.only('register without response', () => {
+      it.only('check if you can upload', () => {
         cy.mount(UploadComponent, {
             imports: [BrowserModule,
               HttpClientModule,
