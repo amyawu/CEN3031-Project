@@ -23,7 +23,7 @@ describe('RegisterComponent', () => {
         cy.get('[data-cy=register_form]').submit()
       })
 
-      it.only('fill out login with response', () => {
+      it.only('fill out register with response', () => {
         cy.mount(RegisterComponent, {
             imports: [BrowserModule,
               HttpClientModule,
@@ -34,7 +34,7 @@ describe('RegisterComponent', () => {
         cy.get('[data-cy="register_password_data"]').type('emailemail')
     })
 
-    it.only('fill out login with response', () => {
+    it.only('fill out register with response', () => {
         cy.mount(RegisterComponent, {
             imports: [BrowserModule,
               HttpClientModule,
@@ -46,23 +46,53 @@ describe('RegisterComponent', () => {
         cy.get('[data-cy=register_form]').submit()
     })
 
-    it.only('check if we can switch to register page from login', () => {
-        cy.mount(RegisterComponent, {
-            imports: [BrowserModule,
-              HttpClientModule,
-              FormsModule
-          ]
-          })
-          cy.get('[data-cy=login_button_register]').should('have.attr', 'href', '/login')
+    it.only('check if we can switch to home page from register', () => {
+      cy.mount(RegisterComponent, {
+          imports: [BrowserModule,
+            HttpClientModule,
+            FormsModule
+        ]
+        })
+        cy.get('[data-cy=home_button_register]').should('have.attr', 'href', '/home')
+  })
+  
+  it.only('check if we can switch to profile page from register', () => {
+    cy.mount(RegisterComponent, {
+        imports: [BrowserModule,
+          HttpClientModule,
+          FormsModule
+      ]
+      })
+      cy.get('[data-cy=profile_button_register]').should('have.attr', 'href', '/profile')
+})
+
+it.only('check if we can switch to image page from register', () => {
+  cy.mount(RegisterComponent, {
+      imports: [BrowserModule,
+        HttpClientModule,
+        FormsModule
+    ]
     })
-    it.only('switches to register page from login', () => {
-        cy.mount(RegisterComponent, {
-            imports: [BrowserModule,
-              HttpClientModule,
-              FormsModule
-          ]
-          })
-          cy.get('[data-cy=login_button_register]').should('have.attr', 'href', '/login')
-          cy.get('[data-cy=login_button_register]').click();
-    })
+    cy.get('[data-cy=upload_button_register]').should('have.attr', 'href', '/upload')
+})
+
+it.only('check if we can switch to register page from register', () => {
+cy.mount(RegisterComponent, {
+    imports: [BrowserModule,
+      HttpClientModule,
+      FormsModule
+  ]
+  })
+  cy.get('[data-cy=register_button_register]').should('have.attr', 'href', '/register')
+})
+
+it.only('check if we can switch to login page from register', () => {
+cy.mount(RegisterComponent, {
+    imports: [BrowserModule,
+      HttpClientModule,
+      FormsModule
+  ]
+  })
+  cy.get('[data-cy=login_button_register]').should('have.attr', 'href', '/login')
+})
 })
