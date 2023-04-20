@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DisplayComponent {
   displayUserData:any = {};
+  imageUrls:any = []
 
   constructor(private _auth: AuthService, private http: HttpClient) {
     this.displayUser();
@@ -19,8 +20,8 @@ export class DisplayComponent {
     let token = localStorage.getItem('token');
     let tstring = '{"token": ' + '"' + token + '"}';
     let jsonobj = JSON.parse(tstring);
-
-    this.http.put<any>('http://localhost:8000/users/display', jsonobj).subscribe(
+    
+    this.http.get<any>('http://localhost:8000/users/all_images', jsonobj).subscribe(
       res => {
         console.log(res)
         this.displayUserData = res;
