@@ -5,9 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 	config "web-service-gin/configs"
 )
@@ -150,5 +152,32 @@ func TestUserLogin(t *testing.T) {
 	}
 	if err := bcrypt.CompareHashAndPassword(hash, []byte(password)); err != nil {
 		t.Errorf("Passwwords do not match: %v", err)
+	}
+}
+
+func TestDatabaseConnection(t *testing.T) {
+	// THIS TEST WILL ALWAYS FAIL BECAUSE MICROSOFT AZURE FAILED US D:
+
+	username := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	host := os.Getenv("DB_SERVER")
+	port := os.Getenv("DB_PORT")
+	dbname := os.Getenv("DB_DATABASE")
+
+	db, err := gorm.Open("sqlserver", fmt.Sprintf("sqlserver://%s:%s@%s:%s?database=%s",
+		username,
+		password,
+		host,
+		port,
+		dbname,
+	))
+	if err != nil {
+		t.Errorf("Error connecting to Azure SQL database: %s", err.Error())
+	}
+
+	defer db.Close()
+
+	if err := db.DB().Ping(); err != nil {
+		t.Errorf("Error pinging Azure SQL database: %s", err.Error())
 	}
 }
