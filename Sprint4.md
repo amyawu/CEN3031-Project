@@ -89,3 +89,5 @@ Register- make sure the developer can see that the user can fill out the registe
 
 # Backend Documentation
 Link: https://github.com/amyawu/CEN3031-Project/blob/main/Back-end%20Documentation.pdf
+
+# Frontpage Readme
