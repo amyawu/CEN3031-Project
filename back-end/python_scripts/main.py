@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.testclient import TestClient
 from sample_network import Model
 from pydantic import BaseModel
 import uvicorn
@@ -11,6 +12,18 @@ class Image(BaseModel):
     img_url: str
 
 
+@app.get("/")
+async def read_main():
+    return {"msg": "Hello World"}
+
+
+client = TestClient(app)
+
+
+def test_read_main():
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.json() == {"msg": "Hello World"}
 
 @app.post("/python/")
 async def classify(image : Image):

@@ -11,3 +11,12 @@
         </mat-card-content>
     </mat-card>
 </div>  
+
+<div *ngFor="let imageUrl of imageUrls">
+    <img [src]="imageUrl">
+  </div>
+  
+  <div *ngFor="let imageUrl of imageUrls">
+    <img src="{{ imageUrl }}" />
+  </div>
+  

@@ -11,9 +11,11 @@ In the backend, we did some code clean up and separated our functions into two f
 
 
 # Unit Tests for Backend
-The only unit test we created was a test to see if connection to the backend database created with Microsoft Azure SQL would work, called TestDatabaseConnection.
+The only unit test we created for Go was a test to see if connection to the backend database created with Microsoft Azure SQL would work, called TestDatabaseConnection.
 Due to MSSQL failing to work with our existing code and lack of resources and time to find a replacement for Sprint 4's conclusion, this is the only unit test
 for backend and it will never succeed. At least we tried.
+
+On the other hand, we created unit tests for the secondary backend for FAST API. This unit tests ensures that the backend server can be spun up on a different port other than the default 8000, as that one is being used for the Go backend.
 
 
 # Backend Documentation
