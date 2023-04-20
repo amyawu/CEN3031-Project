@@ -2,7 +2,6 @@ import { HttpClientModule } from "@angular/common/http"
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AccountComponent } from "./account.component"
-import { RegisterComponent } from "../register/register.component";
 
 describe('Account Page', () => {
     it('mounts', () => {
