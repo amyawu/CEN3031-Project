@@ -11,7 +11,9 @@ In the backend, we did some code clean up and separated our functions into two f
 
 
 # Unit Tests for Backend
-
+The only unit test we created was a test to see if connection to the backend database created with Microsoft Azure SQL would work, called TestDatabaseConnection.
+Due to MSSQL failing to work with our existing code and lack of resources and time to find a replacement for Sprint 4's conclusion, this is the only unit test
+for backend and it will never succeed. At least we tried.
 
 
 # Backend Documentation
