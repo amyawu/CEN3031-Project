@@ -53,8 +53,8 @@ func main() {
 	r.GET("/users/:id", getUser)
 	r.GET("/users/email", getUserByEmail)
 	r.GET("/users/:id/classify", getClassification)
-	r.GET("/users/all_images", getUserImages)
 
+	r.POST("/users/all_images", getUserImages)
 	r.POST("/users", createUser)
 	r.POST("/users/login", verifyUser)
 
