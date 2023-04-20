@@ -1,4 +1,5 @@
 # Project name: Melanoma Classification App (TBD)
+# Front end readme: https://github.com/amyawu/CEN3031-Project/tree/main/front-end
 
 # Project description:
 
