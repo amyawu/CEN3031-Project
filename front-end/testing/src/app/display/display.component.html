@@ -12,5 +12,9 @@
   <div class="image-container">
     <img *ngFor="let url of imageUrls" [src]="url">
   </div>
+
+  <div class = "button-row">
+    <button data-cy=switch_account_button_profile href="/upload" mat-raised-button style="background-color: #FC6238;" [routerLink]="['/upload']">Upload your images</button>
+</div>
   
   

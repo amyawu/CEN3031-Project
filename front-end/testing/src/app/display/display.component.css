@@ -13,13 +13,14 @@
     padding: 20px;
 }
 
-.button-row {
-    display: table-cell;
- }
-
- .button-col {
+.button-col {
     float:left;
     margin-top:250px;
+ }
+
+
+.button-row {
+    display: table-cell;
  }
 
  .mat-toolbar {
