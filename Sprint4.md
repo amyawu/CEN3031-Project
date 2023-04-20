@@ -1,6 +1,7 @@
 # Sprint 3 - Group 38
 # Github Link to Repository: https://github.com/amyawu/CEN3031-Project.git
 # Youtube Link: https://youtu.be/jzXi0Bdh-nc
+# Front end readme: https://github.com/amyawu/CEN3031-Project/tree/main/front-end
 
 # Work completed in Sprint 4
 
