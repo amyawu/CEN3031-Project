@@ -50,54 +50,64 @@ describe('ProfileComponent', () => {
         cy.get('[data-cy=profile_form]').submit()
     })
     
-    it.only('check if we can switch to home page from login', () => {
+    it.only('check if we can switch to home page from profile', () => {
       cy.mount(ProfileComponent, {
           imports: [BrowserModule,
             HttpClientModule,
             FormsModule
         ]
         })
-        cy.get('[data-cy=home_button_login]').should('have.attr', 'href', '/home')
+        cy.get('[data-cy=home_button_profile]').should('have.attr', 'href', '/home')
   })
   
-  it.only('check if we can switch to profile page from login', () => {
+  it.only('check if we can switch to profile page from profile', () => {
     cy.mount(ProfileComponent, {
         imports: [BrowserModule,
           HttpClientModule,
           FormsModule
       ]
       })
-      cy.get('[data-cy=profile_button_login]').should('have.attr', 'href', '/profile')
+      cy.get('[data-cy=profile_button_profile]').should('have.attr', 'href', '/profile')
 })
 
-it.only('check if we can switch to image page from login', () => {
+it.only('check if we can switch to image page from profile', () => {
   cy.mount(ProfileComponent, {
       imports: [BrowserModule,
         HttpClientModule,
         FormsModule
     ]
     })
-    cy.get('[data-cy=upload_button_login]').should('have.attr', 'href', '/upload')
+    cy.get('[data-cy=upload_button_profile]').should('have.attr', 'href', '/upload')
 })
 
-it.only('check if we can switch to register page from login', () => {
+it.only('check if we can switch to register page from profile', () => {
 cy.mount(ProfileComponent, {
     imports: [BrowserModule,
       HttpClientModule,
       FormsModule
   ]
   })
-  cy.get('[data-cy=register_button_login]').should('have.attr', 'href', '/register')
+  cy.get('[data-cy=register_button_profile]').should('have.attr', 'href', '/register')
 })
 
-it.only('check if we can switch to login page from login', () => {
+it.only('check if we can switch to login page from profile', () => {
 cy.mount(ProfileComponent, {
     imports: [BrowserModule,
       HttpClientModule,
       FormsModule
   ]
   })
-  cy.get('[data-cy=login_button_login]').should('have.attr', 'href', '/login')
+  cy.get('[data-cy=login_button_profile]').should('have.attr', 'href', '/login')
 })
+
+it.only('check if we can switch to display info page from profile', () => {
+  cy.mount(ProfileComponent, {
+      imports: [BrowserModule,
+        HttpClientModule,
+        FormsModule
+    ]
+    })
+    cy.get('[data-cy= switch_account_button_profile]').should('have.attr', 'href', '/account')
+  })
     
 })

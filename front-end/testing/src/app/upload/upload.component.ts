@@ -41,7 +41,7 @@ export class UploadComponent {
       // If the user is authenticated, set the Authorization header
       const token = localStorage.getItem('token')
       headers['Authorization'] = `Bearer ` + token;
-      this.http.put('http://localhost:8000/users/image', fdata, { headers })
+      this.http.post('http://localhost:8000/users/image', fdata, { headers })
         .subscribe(res => {
           console.log(res);
           this.uploadUserData = res;
@@ -56,4 +56,4 @@ export class UploadComponent {
   }
   }
 }
-}
+} 
