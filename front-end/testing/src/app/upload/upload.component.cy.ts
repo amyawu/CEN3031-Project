@@ -22,4 +22,24 @@ describe('UploadComponent', () => {
           })
         cy.get('[data-cy=upload_button]').click()
       })
+
+      it.only('check if we can switch to display page from upload', () => {
+        cy.mount(UploadComponent, {
+            imports: [BrowserModule,
+              HttpClientModule,
+              FormsModule
+          ]
+          })
+          cy.get('[data-cy=switch_display_button_upload]').should('have.attr', 'href', '/display')
+    })
+    it.only('switches to display page from upload', () => {
+        cy.mount(UploadComponent, {
+            imports: [BrowserModule,
+              HttpClientModule,
+              FormsModule
+          ]
+          })
+          cy.get('[data-cy=switch_display_button_upload]').should('have.attr', 'href', '/display')
+          cy.get('[data-cy=switch_display_button_upload]').click();
+    })
 })

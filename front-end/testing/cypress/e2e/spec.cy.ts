@@ -29,6 +29,11 @@ describe('visiting upload spec', () => {
   it('visiting upload site', () => {
     cy.visit('http://localhost:4200/upload')
   })
+  it('check if the user wants to switch to display from upload', () => {
+    cy.visit('http://localhost:4200/upload')
+    cy.contains('Display your images').click()
+    cy.url().should('eq','http://localhost:4200/display')
+  })
 })
 
 describe('visiting profile spec', () => {
@@ -86,6 +91,18 @@ describe('visiting profile spec', () => {
     it('visiting home site + + testing 3rd button', () => {
       cy.visit('http://localhost:4200/home')
       cy.contains('Upload an Image').click()
+      cy.url().should('eq','http://localhost:4200/upload')
+    })
+  })
+
+
+  describe('visiting display spec', () => {
+    it('visiting display site', () => {
+      cy.visit('http://localhost:4200/display')
+    })
+    it('check if the user wants to switch to upload from display', () => {
+      cy.visit('http://localhost:4200/display')
+      cy.contains('Upload your images').click()
       cy.url().should('eq','http://localhost:4200/upload')
     })
   })
